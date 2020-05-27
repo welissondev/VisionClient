@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private This As Class
+Private Validation As PhysicalCustomerValidationModel
 
 Private Type Class
   Id As Integer
@@ -42,13 +43,21 @@ Public AddressNote As String
 Public ActiveStatus As Boolean
 Public RegistrationDate As Date
 
+Private Sub Class_Initialize()
+   Set Validation = New PhysicalCustomerValidationModel
+End Sub
+Private Sub Class_Terminate()
+   Set Validation = Nothing
+End Sub
 
 Public Function Insert() As Boolean
     
    Dim Database As ConnectionAccessModel
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
-    
+
+   If Validation.ValidateToSave(Me) = False Then Exit Function
+
    Set QueryBuilder = New StringBuilder
    
       With QueryBuilder
@@ -94,12 +103,14 @@ Public Function Insert() As Boolean
     
 End Function
 
-Public Function Update(Id As Integer) As Boolean
+Public Function Update() As Boolean
 
    Dim Database As ConnectionAccessModel
    Dim QueryBilder As StringBuilder
    Dim Sql As String
 
+   If Validation.ValidateToSave(Me) = False Then Exit Function
+   
    Set QueryBilder = New StringBuilder
       With QueryBilder
          .Append "UPDATE PhysicalCustomer Set internalCode = @internalCode, yourName = @yourName, age = @age,"
@@ -137,7 +148,7 @@ Public Function Update(Id As Integer) As Boolean
          .AddParameter "@addressNote", AddressNote, adVarChar
          .AddParameter "@photoNumber", PhotoNumber, adVarChar
          .AddParameter "@registrationDate", RegistrationDate, adDate
-         .AddParameter "@id", Id, adInteger
+         .AddParameter "@id", This.Id, adInteger
       End With
       
       Update = Database.ExecuteNonQuery(Sql)
@@ -147,12 +158,14 @@ Public Function Update(Id As Integer) As Boolean
 
 End Function
 
-Public Function Delete(Coll As Collection) As Boolean
+Public Function DeleteSeveral(IdList As List) As Boolean
 
    Dim Database As ConnectionAccessModel
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
    Dim Index As Integer
+   
+   If Validation.ValidateToDeleteSeveral(IdList) = False Then Exit Function
    
    If MsgBox("Confirma a exclusão desse cliente?", _
    vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
@@ -165,11 +178,11 @@ Public Function Delete(Coll As Collection) As Boolean
       Sql = QueryBuilder.ToString
       
    Set Database = New ConnectionAccessModel
-      For Index = 1 To Coll.Count
+      For Index = 1 To IdList.Count
          With Database
             .ClearParameter
-            .AddParameter "@id", Coll(Index), adInteger
-             Delete = .ExecuteNonQuery(Sql)
+            .AddParameter "@id", IdList(Index), adInteger
+             DeleteSeveral = .ExecuteNonQuery(Sql)
          End With
       Next
       
@@ -178,12 +191,41 @@ Public Function Delete(Coll As Collection) As Boolean
    
 End Function
 
+Public Function DeleteUnic(Id As Integer) As Boolean
+   Dim Database As ConnectionAccessModel
+   Dim QueryBuilder As StringBuilder
+   Dim Sql As String
+
+   If Validation.ValidateToDeleteUnic(Id) = False Then Exit Function
+   
+   If MsgBox("Confirma a exclusão desse cliente?", _
+   vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
+   vbNo Then Exit Function
+      
+   Set QueryBuilder = New StringBuilder
+      With QueryBuilder
+         .Append "DELETE FROM physicalCustomer WHERE id = @id"
+      End With
+      Sql = QueryBuilder.ToString
+      
+   Set Database = New ConnectionAccessModel
+   With Database
+      .AddParameter "@id", Id, adInteger
+       DeleteUnic = .ExecuteNonQuery(Sql)
+   End With
+      
+   Set Database = Nothing
+   Set QueryBuilder = Nothing
+End Function
+
 Public Sub GetDetails(Id As Integer)
 
    Dim Database As ConnectionAccessModel
    Dim RecordSet As ADODB.RecordSet
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
+
+   If Validation.ValidateToGetDetails(Id) = False Then Exit Sub
 
    Set QueryBuilder = New StringBuilder
       With QueryBuilder
@@ -314,3 +356,5 @@ Public Property Let PhotoNumber(Value As Variant)
       This.PhotoNumber = Value
    End If
 End Property
+
+

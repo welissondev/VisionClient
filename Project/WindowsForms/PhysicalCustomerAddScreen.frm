@@ -30,7 +30,8 @@ Private Mask() As New FormatterMask
 
 Private Sub UserForm_Initialize()
    Call FormatMask
-   Call FillAllComboBox
+   Call FillComboBoxes
+   Call SetDetails(66)
 End Sub
 
 Private Sub ButtonSelectPhoto_Click()
@@ -55,9 +56,9 @@ Error:
    ErrorNoteScreen.Show
 End Sub
 
-Private Function CheckIfPhotoExists(NumberId As String) As Boolean
+Private Function CheckIfPhotoExists(PhotoNumber As String) As Boolean
    With New PictureFile
-      CheckIfPhotoExists = .CheckFile(AppConfig.ClientPhotosDirectory & "\" & NumberId & ".jpg")
+      CheckIfPhotoExists = .CheckFile(AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
    End With
 End Function
 
@@ -91,6 +92,7 @@ Private Sub ButtonSave_Click()
       
       Set Customer = New PhysicalCustomerModel
          With Customer
+            .Id = This.Id
             .InternalCode = TextInternalCode.Value
             .YourName = TextYourName.Value
             .Age = TextAge.Value
@@ -123,7 +125,7 @@ Private Sub ButtonSave_Click()
                   Call MsgBox("Registrado com sucesso!", vbInformation, "SUCESSO")
                End If
             Case Is > 0
-               If Customer.Update(This.Id) = True Then
+               If Customer.Update() = True Then
                   Call SavePhoto
                   Call MsgBox("Editado com sucesso!", vbInformation, "SUCESSO")
                End If
@@ -145,21 +147,17 @@ Private Sub ButtonDelete_Click()
    On Error GoTo Error
       
       Dim Customer As PhysicalCustomerModel
-      Dim IDC As Collection
-      
-      Set IDC = New Collection
-         With IDC
-            .Add This.Id
-         End With
          
       Set Customer = New PhysicalCustomerModel
-         If Customer.Delete(IDC) = True Then
+         If Customer.DeleteUnic(This.Id) = True Then
+            
             With New PictureFile
-               If .DeleteFile(AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg") = True Then
-                  Call ResetScreen
-                  MsgBox "Deletado com sucesso!", vbInformation, "Sucesso"
-               End If
+               .DeleteFile (AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
             End With
+            
+            Call ResetScreen
+            MsgBox "Deletado com sucesso!", vbInformation, "Sucesso"
+            
          End If
      Set Customer = Nothing
      
@@ -272,7 +270,7 @@ Error:
    ErrorNoteScreen.Show
 End Sub
 
-Private Sub FillAllComboBox()
+Private Sub FillComboBoxes()
    On Error GoTo Error
       With New CollectionTypes
           Call .ListSexes(BoxSexes)
@@ -320,4 +318,3 @@ End Sub
 Private Sub OptionInactive_Click()
    OptionInactive = True: OptionActive = False: ActiveStatus = False
 End Sub
-
