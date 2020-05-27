@@ -119,6 +119,7 @@ Private Sub ButtonSave_Click()
             Case Is = 0
                If Customer.Insert = True Then
                   Call SavePhoto
+                  Call ResetScreen
                   Call MsgBox("Registrado com sucesso!", vbInformation, "SUCESSO")
                End If
             Case Is > 0
@@ -137,7 +138,7 @@ Error:
 End Sub
 
 Private Sub ButtonClear_Click()
-   Call ResetApplication
+   Call ResetScreen
 End Sub
 
 Private Sub ButtonDelete_Click()
@@ -155,7 +156,7 @@ Private Sub ButtonDelete_Click()
          If Customer.Delete(IDC) = True Then
             With New PictureFile
                If .DeleteFile(DirectoryPhoto & PhotoNumber & ".jpg") = True Then
-                  Call ResetApplication
+                  Call ResetScreen
                   MsgBox "Deletado com sucesso!", vbInformation, "Sucesso"
                End If
             End With
@@ -230,7 +231,7 @@ Error:
       ErrorNoteScreen.Show
 End Sub
 
-Private Sub ResetApplication()
+Private Sub ResetScreen()
    On Error GoTo Error
      
       Dim x As Control

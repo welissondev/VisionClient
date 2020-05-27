@@ -3,6 +3,11 @@ Option Explicit
 
 Private Work As Workbook
 
+Public Sub ExportAll()
+   Call ExportComponents
+   Call ExportWorkSheet
+End Sub
+
 Public Sub OverwriteExportedFile()
 
    Dim WindowsFormsPaste As String
