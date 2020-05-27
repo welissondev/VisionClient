@@ -37,25 +37,29 @@ Public Sub ExportComponents()
    StanderdModulePaste = Work.Path & "\Project\StanderdModules\"
    ClassModulePaste = Work.Path & "\Project\ClassModules\"
            
-   For ComponentIndex = 1 To Work.VBProject.VBComponents.count
+   For ComponentIndex = 1 To Work.VBProject.VBComponents.Count
       
       DoEvents
       
       With Work.VBProject.VBComponents(ComponentIndex)
          
-         Select Case .Type
+         If .Name <> "VBATest" Then
          
-           Case vbext_ct_MSForm
-                Call ExportVBComponent(Work.VBProject.VBComponents(.Name), WindowsFormsPaste)
-                
-           Case vbext_ct_StdModule
-                Call ExportVBComponent(Work.VBProject.VBComponents(.Name), StanderdModulePaste)
-                
-           Case vbext_ct_ClassModule
-                Call ExportVBComponent(Work.VBProject.VBComponents(.Name), ClassModulePaste)
-                
-         End Select
-      
+               Select Case .Type
+               
+                    Case vbext_ct_MSForm
+                         Call ExportVBComponent(Work.VBProject.VBComponents(.Name), WindowsFormsPaste)
+                         
+                    Case vbext_ct_StdModule
+                         Call ExportVBComponent(Work.VBProject.VBComponents(.Name), StanderdModulePaste)
+                         
+                    Case vbext_ct_ClassModule
+                         Call ExportVBComponent(Work.VBProject.VBComponents(.Name), ClassModulePaste)
+                         
+                  End Select
+            
+         End If
+         
       End With
       
    Next

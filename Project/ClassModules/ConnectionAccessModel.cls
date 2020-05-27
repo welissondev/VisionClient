@@ -53,9 +53,10 @@ Public Function ExecuteNonQuery(ByVal Sql As String) As Boolean
     This.Command.CommandType = adCmdText
     This.Command.CommandText = Sql
     
-    Call This.Command.execute(RecordsAffected)
+    Call This.Command.Execute(RecordsAffected)
     
     ExecuteNonQuery = RecordsAffected
+    
 End Function
 
 Public Function ExecuteWithQuery(ByVal Sql As String) As ADODB.RecordSet
@@ -63,15 +64,27 @@ Public Function ExecuteWithQuery(ByVal Sql As String) As ADODB.RecordSet
     This.Command.ActiveConnection = OpenConnection
     This.Command.CommandType = adCmdText
     This.Command.CommandText = Sql
-    
-    Set This.RecordSet = This.Command.execute()
+    Set This.RecordSet = This.Command.Execute()
     
     Set ExecuteWithQuery = This.RecordSet
     
 End Function
 
-Public Sub AddParameter(Name As String, Value As String, DataType As DataTypeEnum, Optional Size As Integer = 255)
-    This.Command.Parameters.Append This.Command.CreateParameter(Name, DataType, adParamInput, Size, Value)
+Public Sub AddParameter(Name As String, Value As Variant, Optional DataType As DataTypeEnum = adEmpty, _
+Optional ParameterDirection As ParameterDirectionEnum = adParamInput, Optional Size As Integer = 255)
+   This.Command.Parameters.Append This.Command.CreateParameter(Name, DataType, _
+   ParameterDirection, Size, Value)
+End Sub
+Public Sub ClearParameter()
+   
+   Dim i As Integer
+   
+   If This.Command.Parameters.Count > 0 Then
+      For i = 0 To This.Command.Parameters.Count - 1
+         Call This.Command.Parameters.Delete(i)
+      Next
+   End If
+   
 End Sub
 
 Private Sub Class_Finalize()
