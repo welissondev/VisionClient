@@ -36,7 +36,7 @@ End Property
 
 Public Function OpenConnection() As ADODB.Connection
     If This.Connection.State = False Then
-        Call This.Connection.Open(AppConfig.GetConnectionStrig)
+        Call This.Connection.Open(AppConfig.ConnectionStrig)
     End If
     
     Set OpenConnection = This.Connection

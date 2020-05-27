@@ -28,6 +28,11 @@ Private PhotoNumber As String
 Private ActiveStatus As Boolean
 Private Mask() As New FormatterMask
 
+Private Sub UserForm_Initialize()
+   Call FormatMask
+   Call FillAllComboBox
+End Sub
+
 Private Sub ButtonSelectPhoto_Click()
    On Error GoTo Error
       With New PictureFile
@@ -39,7 +44,7 @@ Private Sub ButtonSelectPhoto_Click()
             End If
          Else
             If CheckIfPhotoExists(PhotoNumber) = False Then
-               .LoadFile ImageCustomer, ImageNothing
+               .LoadFile ImageCustomer, AppConfig.AppFileIconsDirectory & "\ImageNothing.jpg"
                PhotoString = vbNullString
                PhotoNumber = vbNullString
             End If
@@ -52,23 +57,18 @@ End Sub
 
 Private Function CheckIfPhotoExists(NumberId As String) As Boolean
    With New PictureFile
-      CheckIfPhotoExists = .CheckFile(DirectoryPhoto & NumberId & ".jpg")
+      CheckIfPhotoExists = .CheckFile(AppConfig.ClientPhotosDirectory & "\" & NumberId & ".jpg")
    End With
 End Function
 
 Private Sub SavePhoto()
    On Error GoTo Error
       With New PictureFile
-         Call .CopyFile(PhotoString, DirectoryPhoto & PhotoNumber & ".jpg")
+         Call .CopyFile(PhotoString, AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
       End With
    Exit Sub
 Error:
    ErrorNoteScreen.Show
-End Sub
-
-Private Sub UserForm_Initialize()
-   Call FormatMask
-   Call FillAllComboBox
 End Sub
 
 Private Sub CheckGenerateCode_Click()
@@ -155,7 +155,7 @@ Private Sub ButtonDelete_Click()
       Set Customer = New PhysicalCustomerModel
          If Customer.Delete(IDC) = True Then
             With New PictureFile
-               If .DeleteFile(DirectoryPhoto & PhotoNumber & ".jpg") = True Then
+               If .DeleteFile(AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg") = True Then
                   Call ResetScreen
                   MsgBox "Deletado com sucesso!", vbInformation, "Sucesso"
                End If
@@ -208,11 +208,11 @@ Public Sub SetDetails(Id As Integer)
             ActiveStatus = .ActiveStatus
          End With
          
-         PhotoString = DirectoryPhoto & PhotoNumber & ".jpg"
+         PhotoString = AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg"
          
          With New PictureFile
             .FileString = PhotoString
-            Call .LoadFile(ImageCustomer)
+            .LoadFile ImageCustomer
          End With
          
          Select Case ActiveStatus
@@ -253,7 +253,7 @@ Private Sub ResetScreen()
                End If
             
             Case Is = "Image"
-               x.Picture = LoadPicture(ImageNothing)
+               x.Picture = LoadPicture(AppConfig.AppFileIconsDirectory & "\ImageNothing.jpg")
          End Select
       Next
       
@@ -321,10 +321,3 @@ Private Sub OptionInactive_Click()
    OptionInactive = True: OptionActive = False: ActiveStatus = False
 End Sub
 
-
-Private Property Get ImageNothing() As String
-   ImageNothing = ThisWorkbook.Path & "\App\File\Icons\ImageNothing.jpg"
-End Property
-Private Property Get DirectoryPhoto() As String
-   DirectoryPhoto = ThisWorkbook.Path & "\User\Vision\ClientPhotos\"
-End Property
