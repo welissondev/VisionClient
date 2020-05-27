@@ -15,6 +15,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Private Type Class
    Id As Integer
 End Type
@@ -312,11 +314,10 @@ Error:
 End Sub
 
 Private Sub OptionActive_Click()
-   OptionInactive = False: OptionActive = True: RegistrationState = True
+   OptionInactive = False: OptionActive = True: ActiveStatus = True
 End Sub
-
 Private Sub OptionInactive_Click()
-   OptionInactive = True: OptionActive = False: RegistrationState = False
+   OptionInactive = True: OptionActive = False: ActiveStatus = False
 End Sub
 
 
