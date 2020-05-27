@@ -30,10 +30,12 @@ Public Sub LoadFile(Image As MSForms.Image, Optional OtherFile As String = Empty
 End Sub
 
 Public Sub CopyFile(Path As String, Dest As String)
-   Dim File As FileSystemObject
-   Set File = New FileSystemObject
-      Call File.CopyFile(Path, Dest, True)
-   Set File = Nothing
+   If CheckFile(Path) = True Then
+      Dim File As FileSystemObject
+         Set File = New FileSystemObject
+            Call File.CopyFile(Path, Dest, True)
+         Set File = Nothing
+   End If
 End Sub
 
 Public Function DeleteFile(Path As String) As Boolean
@@ -43,6 +45,7 @@ Public Function DeleteFile(Path As String) As Boolean
 End Function
 
 Public Function CheckFile(Path As String) As Boolean
+   If Path = Empty Then Exit Function
    If Dir(Path, vbDirectory) <> vbNullString Then
       CheckFile = True
    End If
