@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PhysicalCustomerAddScreen 
    Caption         =   "Diário Excel - Sistema Para Cadastro De Clientes"
-   ClientHeight    =   10950
+   ClientHeight    =   10860
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   15585
+   ClientWidth     =   16485
    OleObjectBlob   =   "PhysicalCustomerAddScreen.frx":0000
    StartUpPosition =   1  'CenterOwner
    WhatsThisButton =   -1  'True
@@ -28,10 +28,17 @@ Private PhotoNumber As String
 Private ActiveStatus As Boolean
 Private Mask() As New FormatterMask
 
+
+Private Sub TextAddressComplement_Change()
+
+End Sub
+
 Private Sub UserForm_Initialize()
    Call FormatMask
    Call FillComboBoxes
-   Call SetDetails(66)
+   Call AppConfig.SetScreenControlStyle(Me)
+   Call SetDetails(67)
+   Me.Caption = AppConfig.AppAName & Space(2) & AppConfig.AppVersion
 End Sub
 
 Private Sub ButtonSelectPhoto_Click()
@@ -48,6 +55,8 @@ Private Sub ButtonSelectPhoto_Click()
                .LoadFile ImageCustomer, AppConfig.AppFileIconsDirectory & "\ImageNothing.jpg"
                PhotoString = vbNullString
                PhotoNumber = vbNullString
+            Else
+               .LoadFile ImageCustomer, AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg"
             End If
          End If
       End With
@@ -318,3 +327,4 @@ End Sub
 Private Sub OptionInactive_Click()
    OptionInactive = True: OptionActive = False: ActiveStatus = False
 End Sub
+

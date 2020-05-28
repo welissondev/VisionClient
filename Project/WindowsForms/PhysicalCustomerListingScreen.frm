@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PhysicalCustomerListingScreen 
-   ClientHeight    =   9855.001
+   ClientHeight    =   10290
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   16050
+   ClientWidth     =   13410
    OleObjectBlob   =   "PhysicalCustomerListingScreen.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -14,6 +14,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Sub ButtonRegisterNew_Click()
-
+Private Sub UserForm_Initialize()
+   Call AppConfig.SetScreenControlStyle(Me)
 End Sub
