@@ -19,18 +19,18 @@ End Function
 Public Sub LoadFile(Image As MSForms.Image, Optional OtherFile As String = Empty)
    Select Case OtherFile
       Case Is = Empty
-         If CheckFile(FileString) = True Then
+         If CheckFileDirectory(FileString) = True Then
             Image.Picture = LoadPicture(FileString)
          End If
       Case Is <> Empty
-         If CheckFile(OtherFile) = True Then
+         If CheckFileDirectory(OtherFile) = True Then
             Image.Picture = LoadPicture(OtherFile)
          End If
    End Select
 End Sub
 
 Public Sub CopyFile(Path As String, Dest As String)
-   If CheckFile(Path) = True Then
+   If CheckFileDirectory(Path) = True Then
       Dim File As FileSystemObject
          Set File = New FileSystemObject
             Call File.CopyFile(Path, Dest, True)
@@ -39,29 +39,15 @@ Public Sub CopyFile(Path As String, Dest As String)
 End Sub
 
 Public Function DeleteFile(Path As String) As Boolean
-   If CheckFile(Path) = True Then
+   If CheckFileDirectory(Path) = True Then
       Call Kill(Path): DeleteFile = True
    End If
 End Function
 
-Public Function CheckFile(Path As String) As Boolean
+Public Function CheckFileDirectory(Path As String) As Boolean
    If Path = Empty Then Exit Function
    If Dir(Path, vbDirectory) <> vbNullString Then
-      CheckFile = True
+      CheckFileDirectory = True
    End If
 End Function
-
-Public Property Get FileNumber() As String
-   
-   Dim Count As Integer
-   Dim Number, ToString As String
-   
-   For Count = 1 To 25
-      Number = Int((9 - 0 + 1) * Rnd + 0) & Chr(Int((22 * Rnd) + 1) + 64)
-      ToString = ToString & Number
-   Next
-            
-   FileNumber = ToString
-                 
-End Property
 

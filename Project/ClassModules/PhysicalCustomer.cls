@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "PhysicalCustomerModel"
+Attribute VB_Name = "PhysicalCustomer"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -10,7 +10,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private This As Class
-Private Validation As PhysicalCustomerValidationModel
 
 Private Type Class
   Id As Integer
@@ -43,20 +42,12 @@ Public AddressNote As String
 Public ActiveStatus As Boolean
 Public RegistrationDate As Date
 
-Private Sub Class_Initialize()
-   Set Validation = New PhysicalCustomerValidationModel
-End Sub
-Private Sub Class_Terminate()
-   Set Validation = Nothing
-End Sub
 
 Public Function Insert() As Boolean
     
-   Dim Database As ConnectionAccessModel
+   Dim Database As ConnectionAccess
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
-
-   If Validation.ValidateToSave(Me) = False Then Exit Function
 
    Set QueryBuilder = New StringBuilder
    
@@ -69,7 +60,7 @@ Public Function Insert() As Boolean
       End With
       Sql = QueryBuilder.ToString
          
-   Set Database = New ConnectionAccessModel
+   Set Database = New ConnectionAccess
       With Database
          .AddParameter "@internalCode", InternalCode, adVarChar
          .AddParameter "@yourName", YourName, adVarChar
@@ -105,11 +96,9 @@ End Function
 
 Public Function Update() As Boolean
 
-   Dim Database As ConnectionAccessModel
+   Dim Database As ConnectionAccess
    Dim QueryBilder As StringBuilder
    Dim Sql As String
-
-   If Validation.ValidateToSave(Me) = False Then Exit Function
    
    Set QueryBilder = New StringBuilder
       With QueryBilder
@@ -123,7 +112,7 @@ Public Function Update() As Boolean
       End With
       Sql = QueryBilder.ToString
                                              
-   Set Database = New ConnectionAccessModel
+   Set Database = New ConnectionAccess
       With Database
          .AddParameter "@internalCode", InternalCode, adVarChar
          .AddParameter "@yourName", YourName, adVarChar
@@ -160,12 +149,10 @@ End Function
 
 Public Function DeleteSeveral(IdList As List) As Boolean
 
-   Dim Database As ConnectionAccessModel
+   Dim Database As ConnectionAccess
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
    Dim Index As Integer
-   
-   If Validation.ValidateToDeleteSeveral(IdList) = False Then Exit Function
    
    If MsgBox("Confirma a exclusão desse cliente?", _
    vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
@@ -177,7 +164,7 @@ Public Function DeleteSeveral(IdList As List) As Boolean
       End With
       Sql = QueryBuilder.ToString
       
-   Set Database = New ConnectionAccessModel
+   Set Database = New ConnectionAccess
       For Index = 1 To IdList.Count
          With Database
             .ClearParameter
@@ -192,12 +179,10 @@ Public Function DeleteSeveral(IdList As List) As Boolean
 End Function
 
 Public Function DeleteUnic(Id As Integer) As Boolean
-   Dim Database As ConnectionAccessModel
+   Dim Database As ConnectionAccess
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
 
-   If Validation.ValidateToDeleteUnic(Id) = False Then Exit Function
-   
    If MsgBox("Confirma a exclusão desse cliente?", _
    vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
    vbNo Then Exit Function
@@ -208,7 +193,7 @@ Public Function DeleteUnic(Id As Integer) As Boolean
       End With
       Sql = QueryBuilder.ToString
       
-   Set Database = New ConnectionAccessModel
+   Set Database = New ConnectionAccess
    With Database
       .AddParameter "@id", Id, adInteger
        DeleteUnic = .ExecuteNonQuery(Sql)
@@ -220,12 +205,10 @@ End Function
 
 Public Sub GetDetails(Id As Integer)
 
-   Dim Database As ConnectionAccessModel
+   Dim Database As ConnectionAccess
    Dim RecordSet As ADODB.RecordSet
    Dim QueryBuilder As StringBuilder
    Dim Sql As String
-
-   If Validation.ValidateToGetDetails(Id) = False Then Exit Sub
 
    Set QueryBuilder = New StringBuilder
       With QueryBuilder
@@ -234,7 +217,7 @@ Public Sub GetDetails(Id As Integer)
 
       Sql = QueryBuilder.ToString
 
-   Set Database = New ConnectionAccessModel
+   Set Database = New ConnectionAccess
       With Database
          .AddParameter "@internalCode", Id, adVarChar
          Set RecordSet = .ExecuteWithQuery(Sql)
@@ -273,6 +256,7 @@ Public Sub GetDetails(Id As Integer)
    Set Database = Nothing
 
 End Sub
+
 
 Public Property Get Id() As Variant
    Id = This.Id
@@ -356,5 +340,3 @@ Public Property Let PhotoNumber(Value As Variant)
       This.PhotoNumber = Value
    End If
 End Property
-
-

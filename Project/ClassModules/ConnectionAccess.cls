@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "ConnectionAccessModel"
+Attribute VB_Name = "ConnectionAccess"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -22,6 +22,18 @@ Public Sub Class_Initialize()
     Set This.Command = New ADODB.Command
     Set This.RecordSet = New ADODB.RecordSet
 End Sub
+Private Sub Class_Terminate()
+   If This.Connection.State = True Then
+       This.Connection.Close
+   End If
+   If This.RecordSet.State = True Then
+      This.RecordSet.Close
+   End If
+   
+   Set This.RecordSet = Nothing
+   Set This.Connection = Nothing
+   Set This.Command = Nothing
+End Sub
 
 Public Property Get Connection() As ADODB.Connection
     Set Connection = This.Connection
@@ -35,11 +47,11 @@ Public Property Let RecordSet(RecordSet As ADODB.RecordSet)
 End Property
 
 Public Function OpenConnection() As ADODB.Connection
-    If This.Connection.State = False Then
-        Call This.Connection.Open(AppConfig.ConnectionStrig)
-    End If
-    
-    Set OpenConnection = This.Connection
+   If This.Connection.State = False Then
+       Call This.Connection.Open(AppSettings.ConnectionString)
+   End If
+   
+   Set OpenConnection = This.Connection
 End Function
 Public Sub CloseConnection()
     If This.Connection.State = True Then This.Connection.Close
@@ -85,11 +97,5 @@ Public Sub ClearParameter()
       Next
    End If
    
-End Sub
-
-Private Sub Class_Finalize()
-   Set This.Connection = Nothing
-   Set This.RecordSet = Nothing
-   Set This.Command = Nothing
 End Sub
 

@@ -1,16 +1,16 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PhysicalCustomerAddScreen 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PhysicalCustomerAdd 
    Caption         =   "Diário Excel - Sistema Para Cadastro De Clientes"
    ClientHeight    =   10860
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   16485
-   OleObjectBlob   =   "PhysicalCustomerAddScreen.frx":0000
+   OleObjectBlob   =   "PhysicalCustomerAdd.frx":0000
    StartUpPosition =   1  'CenterOwner
    WhatsThisButton =   -1  'True
    WhatsThisHelp   =   -1  'True
 End
-Attribute VB_Name = "PhysicalCustomerAddScreen"
+Attribute VB_Name = "PhysicalCustomerAdd"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -28,63 +28,61 @@ Private PhotoNumber As String
 Private ActiveStatus As Boolean
 Private Mask() As New FormatterMask
 
-
-Private Sub TextAddressComplement_Change()
-
-End Sub
-
 Private Sub UserForm_Initialize()
    Call FormatMask
    Call FillComboBoxes
-   Call AppConfig.SetScreenControlStyle(Me)
-   Call SetDetails(67)
-   Me.Caption = AppConfig.AppAName & Space(2) & AppConfig.AppVersion
+   Call AppFunction.SetStyle(Me)
+   Me.Caption = AppSettings.AppName & Space(2) & AppSettings.AppVersion
 End Sub
 
 Private Sub ButtonSelectPhoto_Click()
-   On Error GoTo Error
+   On Error GoTo error
       With New PictureFile
-         If .CheckFile(.OpenFile) = True Then
+         If .CheckFileDirectory(.OpenFile) = True Then
             .LoadFile ImageCustomer
              PhotoString = .FileString
             If CheckIfPhotoExists(PhotoNumber) = False Then
-               PhotoNumber = .FileNumber
+               With New CodeGenerator
+                  PhotoNumber = .Generate(25, True)
+               End With
             End If
          Else
             If CheckIfPhotoExists(PhotoNumber) = False Then
-               .LoadFile ImageCustomer, AppConfig.AppFileIconsDirectory & "\ImageNothing.jpg"
+               .LoadFile ImageCustomer, AppSettings.AppFileIconsDirectory & "\ImageNothing.jpg"
                PhotoString = vbNullString
                PhotoNumber = vbNullString
             Else
-               .LoadFile ImageCustomer, AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg"
+               .LoadFile ImageCustomer, AppSettings.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg"
             End If
          End If
       End With
    Exit Sub
-Error:
-   ErrorNoteScreen.Show
+error:
+   ExceptionErrorNotifier.Show
 End Sub
 
 Private Function CheckIfPhotoExists(PhotoNumber As String) As Boolean
    With New PictureFile
-      CheckIfPhotoExists = .CheckFile(AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
+      CheckIfPhotoExists = .CheckFileDirectory(AppSettings.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
    End With
 End Function
 
 Private Sub SavePhoto()
-   On Error GoTo Error
+   On Error GoTo error
       With New PictureFile
-         Call .CopyFile(PhotoString, AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
+         Call .CopyFile(PhotoString, AppSettings.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
       End With
    Exit Sub
-Error:
-   ErrorNoteScreen.Show
+error:
+   ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub CheckGenerateCode_Click()
    Select Case CheckGenerateCode.Value
       Case Is = True
-         TextInternalCode.Text = SingleCode.GetCode(8)
+         With New CodeGenerator
+            TextInternalCode.Text = .Generate(8)
+         End With
          TextInternalCode.Locked = True
          TextYourName.SetFocus
       Case Is = False
@@ -95,11 +93,23 @@ Private Sub CheckGenerateCode_Click()
 End Sub
 
 Private Sub ButtonSave_Click()
-   On Error GoTo Error
+   On Error GoTo error
    
-      Dim Customer As PhysicalCustomerModel
+      If Len(TextInternalCode.Value) < 8 Then
+            MsgBox "O código do cliente, deve ter no minimo 8 digitos!", vbExclamation, "Obrigatório"
+            TextInternalCode.SetFocus
+         Exit Sub
+      End If
       
-      Set Customer = New PhysicalCustomerModel
+      If TextYourName.Value = Empty Then
+            MsgBox "O nome do cliente não foi informado!", vbExclamation, "Obrigatório"
+            TextYourName.SetFocus
+         Exit Sub
+      End If
+      
+      Dim Customer As PhysicalCustomer
+      
+      Set Customer = New PhysicalCustomer
          With Customer
             .Id = This.Id
             .InternalCode = TextInternalCode.Value
@@ -143,9 +153,8 @@ Private Sub ButtonSave_Click()
          Set Customer = Nothing
 
       Exit Sub
-Error:
-
-    ErrorNoteScreen.Show
+error:
+    ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub ButtonClear_Click()
@@ -153,15 +162,20 @@ Private Sub ButtonClear_Click()
 End Sub
 
 Private Sub ButtonDelete_Click()
-   On Error GoTo Error
+   On Error GoTo error
       
-      Dim Customer As PhysicalCustomerModel
+      If This.Id = 0 Then
+            MsgBox "Selecione o registro para deletar!", vbExclamation, "Selecione"
+         Exit Sub
+      End If
+      
+      Dim Customer As PhysicalCustomer
          
-      Set Customer = New PhysicalCustomerModel
+      Set Customer = New PhysicalCustomer
          If Customer.DeleteUnic(This.Id) = True Then
             
             With New PictureFile
-               .DeleteFile (AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
+               .DeleteFile (AppSettings.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg")
             End With
             
             Call ResetScreen
@@ -171,8 +185,8 @@ Private Sub ButtonDelete_Click()
      Set Customer = Nothing
      
    Exit Sub
-Error:
-   ErrorNoteScreen.Show
+error:
+   ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub ButtonClose_Click()
@@ -180,11 +194,16 @@ Private Sub ButtonClose_Click()
 End Sub
 
 Public Sub SetDetails(Id As Integer)
-   On Error GoTo Error
+   On Error GoTo error
         
-      Dim Customer As PhysicalCustomerModel
+      If Id = 0 Then
+            MsgBox "Selecione um registro para visualizar!", vbExclamation, "Selecione"
+         Exit Sub
+      End If
+        
+      Dim Customer As PhysicalCustomer
             
-      Set Customer = New PhysicalCustomerModel
+      Set Customer = New PhysicalCustomer
          With Customer
             Call .GetDetails(Id)
          End With
@@ -215,7 +234,7 @@ Public Sub SetDetails(Id As Integer)
             ActiveStatus = .ActiveStatus
          End With
          
-         PhotoString = AppConfig.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg"
+         PhotoString = AppSettings.ClientPhotosDirectory & "\" & PhotoNumber & ".jpg"
          
          With New PictureFile
             .FileString = PhotoString
@@ -234,12 +253,12 @@ Public Sub SetDetails(Id As Integer)
       Set Customer = Nothing
       
       Exit Sub
-Error:
-      ErrorNoteScreen.Show
+error:
+      ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub ResetScreen()
-   On Error GoTo Error
+   On Error GoTo error
      
       Dim x As Control
       For Each x In Me.Controls
@@ -260,7 +279,7 @@ Private Sub ResetScreen()
                End If
             
             Case Is = "Image"
-               x.Picture = LoadPicture(AppConfig.AppFileIconsDirectory & "\ImageNothing.jpg")
+               x.Picture = LoadPicture(AppSettings.AppFileIconsDirectory & "\ImageNothing.jpg")
          End Select
       Next
       
@@ -275,24 +294,24 @@ Private Sub ResetScreen()
       ActiveStatus = False
       
    Exit Sub
-Error:
-   ErrorNoteScreen.Show
+error:
+   ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub FillComboBoxes()
-   On Error GoTo Error
+   On Error GoTo error
       With New CollectionTypes
           Call .ListSexes(BoxSexes)
           Call .ListCivilStatus(BoxCivilStatus)
           Call .ListStates(BoxStates)
       End With
    Exit Sub
-Error:
-   ErrorNoteScreen.Show
+error:
+   ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub FormatMask()
-   On Error GoTo Error
+   On Error GoTo error
       Dim Count As Integer
       Dim Index As Integer
       
@@ -317,8 +336,8 @@ Private Sub FormatMask()
          End Select
       Next
    Exit Sub
-Error:
-   ErrorNoteScreen.Show
+error:
+   ExceptionErrorNotifier.Show
 End Sub
 
 Private Sub OptionActive_Click()
