@@ -7,7 +7,7 @@ Option Explicit
 '***************************************************
 
 Public Property Get ConnectionString() As String
-   ConnectionString = "Provider=Microsoft.ACE.Oledb.16.0;Data Source = " & ThisWorkbook.Path & "\App\Data\VisionBase.mdb"
+   ConnectionString = "Provider=Microsoft.ACE.Oledb.12.0;Data Source = " & ThisWorkbook.Path & "\App\Data\VisionBase.mdb"
 End Property
 
 
@@ -20,7 +20,7 @@ End Property
 
 
 Public Property Get AppVersion() As String
-   AppVersion = "v2.0.13.100"
+   AppVersion = "v1.2.14.160"
 End Property
 Public Property Get AppName() As String
    AppName = "Vision Client"

@@ -29,17 +29,28 @@ Public WithEvents ToCurrency As MSForms.TextBox
 Attribute ToCurrency.VB_VarHelpID = -1
 Public WithEvents CanNotString  As MSForms.TextBox
 Attribute CanNotString.VB_VarHelpID = -1
+Public WithEvents ToJustDotString  As MSForms.TextBox
+Attribute ToJustDotString.VB_VarHelpID = -1
 
 Private Sub CanNotString_Change()
    Dim ret As String
    Dim i As Integer
        For i = 1 To Len(CanNotString.Text)
-           DoEvents
            If Asc(Mid(CanNotString.Text, i, 1)) >= 48 And Asc(Mid(CanNotString.Text, i, 1)) <= 58 Then
                ret = ret & Mid(CanNotString.Text, i, 1)
            End If
        Next i
    CanNotString = ret
+End Sub
+Private Sub ToJustDotString_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+   With ToJustDotString
+       .MaxLength = 9
+       Select Case KeyAscii
+           Case 48 To 57
+              If .SelStart = 6 Then .SelText = "."
+           Case Else: KeyAscii = 0
+       End Select
+   End With
 End Sub
 Private Sub ToSocialSecurity_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
    With ToSocialSecurity

@@ -16,9 +16,9 @@ Public Function Generate(Optional Size As Integer = 8, Optional WithLetter As Bo
    For i = 1 To Size
       Select Case WithLetter
          Case Is = False
-            Generate = Generate & Int((7 - 0 + 1) * Rnd + 0)
+            Generate = Generate & Int((7 * Rnd) + 1)
          Case Is = True
-            Generate = Generate & Int((7 - 0 + 1) * Rnd + 0) & Chr(Int((22 * Rnd) + 1) + 64)
+            Generate = Generate & Int((7 - 0 + 1) * Rnd + 1) & Chr(Int((22 * Rnd) + 1) + 64)
       End Select
    Next
    

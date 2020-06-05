@@ -42,7 +42,6 @@ Public AddressNote As String
 Public ActiveStatus As Boolean
 Public RegistrationDate As Date
 
-
 Public Function Insert() As Boolean
     
    Dim Database As ConnectionAccess
@@ -257,6 +256,49 @@ Public Sub GetDetails(Id As Integer)
 
 End Sub
 
+Public Function SearchData() As ADODB.RecordSet
+   
+   Dim Database As ConnectionAccess
+   Dim Query As StringBuilder
+   
+   Set Database = New ConnectionAccess
+   Set Query = New StringBuilder
+      With Query
+         
+         .Append "SELECT Id, internalCode, yourName, socialSecurity, indentyCard,"
+         .Append "email FROM PhysicalCustomer WHERE Id > 0 "
+         
+         If InternalCode <> Empty Then
+            .Append "AND internalCode LIKE @internalCode ": Database.AddParameter _
+            "@internalCode", "%" & InternalCode & "%", adVarChar
+            
+         ElseIf YourName <> Empty Then
+            .Append "AND yourName LIKE @yourName ": Database.AddParameter _
+            "@yourName", "%" & YourName & "%", adVarChar
+                  
+         ElseIf SocialSecurity <> Empty Then
+            .Append "AND socialSecurity LIKE @socialSecurity ": Database.AddParameter _
+            "@socialSecurity", SocialSecurity, adVarChar
+         
+         ElseIf IndentyCard <> Empty Then
+            .Append "AND indentyCard LIKE @indentyCard ": Database.AddParameter _
+            "@indentyCard", IndentyCard, adVarChar
+            
+         ElseIf Email <> Empty Then
+            .Append "AND email LIKE @email ": Database.AddParameter _
+            "@email", "%" & Email & "%", adVarChar
+         End If
+         
+         .Append "ORDER BY YourName"
+         
+      End With
+      
+      Set SearchData = Database.ExecuteWithQuery(Query.ToString)
+      
+   Set Database = Nothing
+   Set Query = Nothing
+
+End Function
 
 Public Property Get Id() As Variant
    Id = This.Id
@@ -340,3 +382,5 @@ Public Property Let PhotoNumber(Value As Variant)
       This.PhotoNumber = Value
    End If
 End Property
+
+

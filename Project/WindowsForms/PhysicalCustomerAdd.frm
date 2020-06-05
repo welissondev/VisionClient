@@ -26,7 +26,6 @@ Private This As Class
 Private PhotoString As String
 Private PhotoNumber As String
 Private ActiveStatus As Boolean
-Private Mask() As New FormatterMask
 
 Private Sub UserForm_Initialize()
    Call FormatMask
@@ -252,6 +251,8 @@ Public Sub SetDetails(Id As Integer)
    
       Set Customer = Nothing
       
+      Me.Show
+      
       Exit Sub
 error:
       ExceptionErrorNotifier.Show
@@ -314,6 +315,7 @@ Private Sub FormatMask()
    On Error GoTo error
       Dim Count As Integer
       Dim Index As Integer
+      Static Mask() As New FormatterMask
       
       Count = Me.Controls.Count - 1
       
@@ -329,7 +331,7 @@ Private Sub FormatMask()
                Set Mask(Index).ToFixedPhone = Controls(Index)
             Case Is = "SocialSecurity"
                Set Mask(Index).ToSocialSecurity = Controls(Index)
-            Case Is = "Number"
+            Case Is = "InternalCode"
                Set Mask(Index).CanNotString = Controls(Index)
             Case Is = "ZipCode"
                Set Mask(Index).ToZipCode = Controls(Index)

@@ -76,8 +76,9 @@ Public Function ExecuteWithQuery(ByVal Sql As String) As ADODB.RecordSet
     This.Command.ActiveConnection = OpenConnection
     This.Command.CommandType = adCmdText
     This.Command.CommandText = Sql
-    Set This.RecordSet = This.Command.Execute()
+    This.Connection.CursorLocation = adUseClient
     
+    Set This.RecordSet = This.Command.Execute
     Set ExecuteWithQuery = This.RecordSet
     
 End Function
