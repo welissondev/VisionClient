@@ -15,9 +15,6 @@ Backup of *.doc*
 # Excel Backup File
 *.xlk
 
-*.png
-*.jpg
-
 # PowerPoint temporary
 ~$*.ppt*
 
