@@ -20,10 +20,10 @@ End Property
 
 
 Public Property Get AppVersion() As String
-   AppVersion = "v1.2.14.160"
+   AppVersion = "1.3.17.013"
 End Property
 Public Property Get AppName() As String
-   AppName = "Vision Client"
+   AppName = "Sistema Vision Client"
 End Property
 
 
