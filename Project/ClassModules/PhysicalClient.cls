@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "PhysicalCustomer"
+Attribute VB_Name = "PhysicalClient"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -44,111 +44,135 @@ Public RegistrationDate As Date
 Public Function Insert() As Boolean
     
    Dim Database As ConnectionAccess
-   Dim QueryBuilder As StringBuilder
+   Dim Query As StringBuilder
    Dim Sql As String
 
-   Set QueryBuilder = New StringBuilder
-   
-      With QueryBuilder
-         .Append "INSERT INTO physicalCustomer(internalCode, yourName, age, birthDay, sex, indentyCard, socialSecurity, civilStatus, photoNumber, "
-         .Append "fixedPhone, mobilePhone, whatSapp, email, district, city, state, zipCode, streetNumber, addressDescription, addressComplement, "
-         .Append "addressNote, registrationDate, ActiveStatus) VALUES (@internalCode, @yourName, @age, @birthDay, @sex, @indentyCard,"
-         .Append "@socialSecurity, @civilStatus, @photoNumber,@fixedPhone, @mobilePhone, @whatSapp, @email, @district, @city, @state,"
-         .Append "@zipCode, @streetNumber, @addressDescription, @addressComplement, @addressNote, @registrationDate, @ActiveStatus);"
-      End With
-      Sql = QueryBuilder.ToString
+   Set Query = New StringBuilder
+         With Query
+            .Append "INSERT INTO PhysicalClient(internalCode, yourName, age, birthDay, sex, indentyCard, socialSecurity, civilStatus, photoNumber, "
+            .Append "fixedPhone, mobilePhone, whatSapp, email, district, city, state, zipCode, streetNumber, addressDescription, addressComplement, "
+            .Append "addressNote, registrationDate, ActiveStatus) VALUES (@internalCode, @yourName, @age, @birthDay, @sex, @indentyCard,"
+            .Append "@socialSecurity, @civilStatus, @photoNumber,@fixedPhone, @mobilePhone, @whatSapp, @email, @district, @city, @state,"
+            .Append "@zipCode, @streetNumber, @addressDescription, @addressComplement, @addressNote, @registrationDate, @ActiveStatus);"
+         End With
+      Sql = Query.ToString
          
    Set Database = New ConnectionAccess
-      With Database
-         .AddParameter "@internalCode", InternalCode, adVarChar
-         .AddParameter "@yourName", YourName, adVarChar
-         .AddParameter "@age", This.Age, adInteger
-         .AddParameter "@birthDay", This.BirthDay, adDate
-         .AddParameter "@sex", This.Sex, adVarChar
-         .AddParameter "@indentyCard", IndentyCard, adVarChar
-         .AddParameter "@socialSecurity", SocialSecurity, adVarChar
-         .AddParameter "@civilStatus", This.CivilStatus, adVarChar
-         .AddParameter "@photoNumber", This.PhotoNumber, adVarChar
-         .AddParameter "@fixedPhone", FixedPhone, adVarChar
-         .AddParameter "@mobilePhone", MobilePhone, adVarChar
-         .AddParameter "@whatSapp", WhatsApp, adVarChar
-         .AddParameter "@email", Email, adVarChar
-         .AddParameter "@district", District, adVarChar
-         .AddParameter "@City", City, adVarChar
-         .AddParameter "@state", This.State, adVarChar
-         .AddParameter "@zipCode", ZipCode, adVarChar
-         .AddParameter "@streetNumber", StreetNumber, adVarChar
-         .AddParameter "@addressDescription", AddressDescription, adVarChar
-         .AddParameter "@addressComplement", AddressComplement, adVarChar
-         .AddParameter "@addressNote", AddressNote, adVarChar
-         .AddParameter "@registrationDate", Date, adDate
-         .AddParameter "@ActiveStatus", This.ActiveStatus, adVarChar
-      End With
-      
+         With Database
+            .AddParameter "@internalCode", InternalCode, adVarChar
+            .AddParameter "@yourName", YourName, adVarChar
+            .AddParameter "@age", This.Age, adInteger
+            .AddParameter "@birthDay", This.BirthDay, adDate
+            .AddParameter "@sex", This.Sex, adVarChar
+            .AddParameter "@indentyCard", IndentyCard, adVarChar
+            .AddParameter "@socialSecurity", SocialSecurity, adVarChar
+            .AddParameter "@civilStatus", This.CivilStatus, adVarChar
+            .AddParameter "@photoNumber", This.PhotoNumber, adVarChar
+            .AddParameter "@fixedPhone", FixedPhone, adVarChar
+            .AddParameter "@mobilePhone", MobilePhone, adVarChar
+            .AddParameter "@whatSapp", WhatsApp, adVarChar
+            .AddParameter "@email", Email, adVarChar
+            .AddParameter "@district", District, adVarChar
+            .AddParameter "@City", City, adVarChar
+            .AddParameter "@state", This.State, adVarChar
+            .AddParameter "@zipCode", ZipCode, adVarChar
+            .AddParameter "@streetNumber", StreetNumber, adVarChar
+            .AddParameter "@addressDescription", AddressDescription, adVarChar
+            .AddParameter "@addressComplement", AddressComplement, adVarChar
+            .AddParameter "@addressNote", AddressNote, adVarChar
+            .AddParameter "@registrationDate", Date, adDate
+            .AddParameter "@ActiveStatus", This.ActiveStatus, adVarChar
+         End With
       Insert = Database.ExecuteNonQuery(Sql)
    
    Set Database = Nothing
-   Set QueryBuilder = Nothing
+   Set Query = Nothing
     
 End Function
 
 Public Function Update() As Boolean
 
    Dim Database As ConnectionAccess
-   Dim QueryBilder As StringBuilder
+   Dim Query As StringBuilder
    Dim Sql As String
    
-   Set QueryBilder = New StringBuilder
-      With QueryBilder
-         .Append "UPDATE PhysicalCustomer Set internalCode = @internalCode, yourName = @yourName, age = @age,"
-         .Append "birthDay = @birthDay, sex = @sex, indentyCard = @indentyCard, socialSecurity = @socialSecurity,"
-         .Append "civilStatus = @civilStatus, fixedPhone = @fixedPhone, mobilePhone = @mobilePhone, whatSapp = @whatSapp,"
-         .Append "email = @email, addressDescription = @AddressDescription, district = @district, city = @city,"
-         .Append "state = @state, zipCode = @zipCode, streetNumber = @streetNumber, addressComplement = @addressComplement,"
-         .Append "ActiveStatus = @ActiveStatus, addressNote = @addressNote, photoNumber = @photoNumber,"
-         .Append "registrationDate = @registrationDate WHERE id = @id"
-      End With
-      Sql = QueryBilder.ToString
+   Set Query = New StringBuilder
+         With Query
+            .Append "UPDATE PhysicalClient Set internalCode = @internalCode, yourName = @yourName, age = @age,"
+            .Append "birthDay = @birthDay, sex = @sex, indentyCard = @indentyCard, socialSecurity = @socialSecurity,"
+            .Append "civilStatus = @civilStatus, fixedPhone = @fixedPhone, mobilePhone = @mobilePhone, whatSapp = @whatSapp,"
+            .Append "email = @email, addressDescription = @AddressDescription, district = @district, city = @city,"
+            .Append "state = @state, zipCode = @zipCode, streetNumber = @streetNumber, addressComplement = @addressComplement,"
+            .Append "ActiveStatus = @ActiveStatus, addressNote = @addressNote, photoNumber = @photoNumber,"
+            .Append "registrationDate = @registrationDate WHERE id = @id"
+         End With
+      Sql = Query.ToString
                                              
    Set Database = New ConnectionAccess
-      With Database
-         .AddParameter "@internalCode", InternalCode, adVarChar
-         .AddParameter "@yourName", YourName, adVarChar
-         .AddParameter "@age", This.Age, adInteger
-         .AddParameter "@birthDay", This.BirthDay, adDate
-         .AddParameter "@sex", This.Sex, adVarChar
-         .AddParameter "@indentyCard", IndentyCard, adVarChar
-         .AddParameter "@socialSecurity", SocialSecurity, adVarChar
-         .AddParameter "@civilStatus", This.CivilStatus, adVarChar
-         .AddParameter "@fixedPhone", FixedPhone, adVarChar
-         .AddParameter "@mobilePhone", MobilePhone, adVarChar
-         .AddParameter "@whatSapp", WhatsApp, adVarChar
-         .AddParameter "@email", Email, adVarChar
-         .AddParameter "@addressDescription", AddressDescription, adVarChar
-         .AddParameter "@district", District, adVarChar
-         .AddParameter "@city", City, adVarChar
-         .AddParameter "@state", This.State, adVarChar
-         .AddParameter "@zipCode", ZipCode, adVarChar
-         .AddParameter "@streetNumber", StreetNumber, adVarChar
-         .AddParameter "@addressComplement", AddressComplement, adVarChar
-         .AddParameter "@ActiveStatus", This.ActiveStatus, adVarChar
-         .AddParameter "@addressNote", AddressNote, adVarChar
-         .AddParameter "@photoNumber", PhotoNumber, adVarChar
-         .AddParameter "@registrationDate", RegistrationDate, adDate
-         .AddParameter "@id", This.Id, adInteger
-      End With
-      
+         With Database
+            .AddParameter "@internalCode", InternalCode, adVarChar
+            .AddParameter "@yourName", YourName, adVarChar
+            .AddParameter "@age", This.Age, adInteger
+            .AddParameter "@birthDay", This.BirthDay, adDate
+            .AddParameter "@sex", This.Sex, adVarChar
+            .AddParameter "@indentyCard", IndentyCard, adVarChar
+            .AddParameter "@socialSecurity", SocialSecurity, adVarChar
+            .AddParameter "@civilStatus", This.CivilStatus, adVarChar
+            .AddParameter "@fixedPhone", FixedPhone, adVarChar
+            .AddParameter "@mobilePhone", MobilePhone, adVarChar
+            .AddParameter "@whatSapp", WhatsApp, adVarChar
+            .AddParameter "@email", Email, adVarChar
+            .AddParameter "@addressDescription", AddressDescription, adVarChar
+            .AddParameter "@district", District, adVarChar
+            .AddParameter "@city", City, adVarChar
+            .AddParameter "@state", This.State, adVarChar
+            .AddParameter "@zipCode", ZipCode, adVarChar
+            .AddParameter "@streetNumber", StreetNumber, adVarChar
+            .AddParameter "@addressComplement", AddressComplement, adVarChar
+            .AddParameter "@ActiveStatus", This.ActiveStatus, adVarChar
+            .AddParameter "@addressNote", AddressNote, adVarChar
+            .AddParameter "@photoNumber", PhotoNumber, adVarChar
+            .AddParameter "@registrationDate", RegistrationDate, adDate
+            .AddParameter "@id", This.Id, adInteger
+         End With
       Update = Database.ExecuteNonQuery(Sql)
    
    Set Database = Nothing
-   Set QueryBilder = Nothing
+   Set Query = Nothing
 
 End Function
 
-Public Function DeleteSeveral(IdList As List) As Boolean
+Public Function Delete(Id As Integer) As Boolean
 
    Dim Database As ConnectionAccess
-   Dim QueryBuilder As StringBuilder
+   Dim Query As StringBuilder
+   Dim Sql As String
+
+   If MsgBox("Confirma a exclusão desse cliente?", _
+   vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
+   vbNo Then Exit Function
+   
+   Set Query = New StringBuilder
+      With Query
+         .Append "DELETE FROM PhysicalClient WHERE id = @id"
+      End With
+   Sql = Query.ToString
+      
+   Set Database = New ConnectionAccess
+      With Database
+         .AddParameter "@id", Id, adInteger
+      End With
+   Delete = Database.ExecuteNonQuery(Sql)
+   
+   Set Database = Nothing
+   Set Query = Nothing
+   
+End Function
+
+Public Function DeleteSelected(IdList As DataList) As Boolean
+
+   Dim Database As ConnectionAccess
+   Dim Query As StringBuilder
    Dim Sql As String
    Dim Index As Integer
    
@@ -156,71 +180,45 @@ Public Function DeleteSeveral(IdList As List) As Boolean
    vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
    vbNo Then Exit Function
       
-   Set QueryBuilder = New StringBuilder
-      With QueryBuilder
-         .Append "DELETE FROM physicalCustomer WHERE id = @id"
+   Set Query = New StringBuilder
+      With Query
+         .Append "DELETE FROM PhysicalClient WHERE id = @id"
       End With
-      Sql = QueryBuilder.ToString
+   Sql = Query.ToString
       
    Set Database = New ConnectionAccess
       For Index = 1 To IdList.Count
-         With Database
-            .ClearParameter
-            .AddParameter "@id", IdList(Index), adInteger
-             DeleteSeveral = .ExecuteNonQuery(Sql)
-         End With
+            With Database
+               .ClearParameter
+               .AddParameter "@id", IdList(Index), adInteger
+            End With
+         DeleteSelected = Database.ExecuteNonQuery(Sql)
       Next
       
    Set Database = Nothing
-   Set QueryBuilder = Nothing
+   Set Query = Nothing
    
-End Function
-
-Public Function DeleteUnic(Id As Integer) As Boolean
-   Dim Database As ConnectionAccess
-   Dim QueryBuilder As StringBuilder
-   Dim Sql As String
-
-   If MsgBox("Confirma a exclusão desse cliente?", _
-   vbExclamation + vbYesNo + vbDefaultButton2, "IMPORTANTE") = _
-   vbNo Then Exit Function
-      
-   Set QueryBuilder = New StringBuilder
-      With QueryBuilder
-         .Append "DELETE FROM physicalCustomer WHERE id = @id"
-      End With
-      Sql = QueryBuilder.ToString
-      
-   Set Database = New ConnectionAccess
-   With Database
-      .AddParameter "@id", Id, adInteger
-       DeleteUnic = .ExecuteNonQuery(Sql)
-   End With
-      
-   Set Database = Nothing
-   Set QueryBuilder = Nothing
 End Function
 
 Public Sub GetDetails(Id As Integer)
 
    Dim Database As ConnectionAccess
    Dim RecordSet As ADODB.RecordSet
-   Dim QueryBuilder As StringBuilder
+   Dim Query As StringBuilder
    Dim Sql As String
-
-   Set QueryBuilder = New StringBuilder
-      With QueryBuilder
-         .Append "SELECT * FROM PhysicalCustomer WHERE Id = @Id"
+   
+   Set Query = New StringBuilder
+      With Query
+         .Append "SELECT * FROM PhysicalClient WHERE Id = @Id"
       End With
-
-      Sql = QueryBuilder.ToString
+   Sql = Query.ToString
 
    Set Database = New ConnectionAccess
       With Database
          .AddParameter "@internalCode", Id, adVarChar
-         Set RecordSet = .ExecuteWithQuery(Sql)
       End With
-
+   Set RecordSet = Database.ExecuteWithQuery(Sql)
+      
       If RecordSet.BOF = False Then
          With RecordSet
             This.Id = .Fields("id").Value
@@ -250,7 +248,7 @@ Public Sub GetDetails(Id As Integer)
          End With
       End If
 
-   Set QueryBuilder = Nothing
+   Set Query = Nothing
    Set Database = Nothing
 
 End Sub
@@ -259,15 +257,16 @@ Public Function SearchData() As ADODB.RecordSet
    
    Dim Database As ConnectionAccess
    Dim Query As StringBuilder
+   Dim Sql As String
    
    Set Database = New ConnectionAccess
    Set Query = New StringBuilder
+   
       With Query
-         
          .Append "SELECT id, internalCode, yourName, socialSecurity, indentyCard,"
          .Append "email, sex, civilStatus, activeStatus FROM "
-         .Append "PhysicalCustomer WHERE Id > 0 "
-         
+         .Append "PhysicalClient WHERE Id > 0 "
+   
          If InternalCode <> Empty Then
             .Append "AND internalCode LIKE @internalCode ": Database.AddParameter _
             "@internalCode", "%" & InternalCode & "%", adVarChar
@@ -289,12 +288,12 @@ Public Function SearchData() As ADODB.RecordSet
             "@email", "%" & Email & "%", adVarChar
          End If
          
-         .Append "ORDER BY YourName"
+         .Append "ORDER BY YourName": Sql = .ToString
          
       End With
-      
-      Set SearchData = Database.ExecuteWithQuery(Query.ToString)
-      
+              
+   Set SearchData = Database.ExecuteWithQuery(Sql)
+         
    Set Database = Nothing
    Set Query = Nothing
 
@@ -329,13 +328,13 @@ End Property
 
 Public Property Get Sex() As String
    If This.Sex = Empty Then
-      Sex = "Select"
+      Sex = "Selecionar"
    Else
       Sex = This.Sex
    End If
 End Property
 Public Property Let Sex(Value As String)
-   If Value = "Select" Then
+   If Value = "Selecionar" Then
       This.Sex = Empty
    Else
       This.Sex = Value
@@ -344,13 +343,13 @@ End Property
 
 Public Property Get CivilStatus() As String
    If This.CivilStatus = Empty Then
-      CivilStatus = "Select"
+      CivilStatus = "Selecionar"
    Else
       CivilStatus = This.CivilStatus
    End If
 End Property
 Public Property Let CivilStatus(Value As String)
-   If Value = "Select" Then
+   If Value = "Selecionar" Then
       This.CivilStatus = Empty
    Else
       This.CivilStatus = Value
@@ -359,13 +358,13 @@ End Property
 
 Public Property Get State() As String
    If This.State = Empty Then
-      State = "Select"
+      State = "Selecionar"
    Else
       State = This.State
    End If
 End Property
 Public Property Let State(Value As String)
-   If Value = "Select" Then
+   If Value = "Selecionar" Then
       This.State = Empty
    Else
       This.State = Value
@@ -385,15 +384,17 @@ End Property
 
 Public Property Get ActiveStatus() As String
    If This.ActiveStatus = Empty Then
-      ActiveStatus = "Select"
+      ActiveStatus = "Selecionar"
    Else
       ActiveStatus = This.ActiveStatus
    End If
 End Property
 Public Property Let ActiveStatus(Value As String)
-   If Value = "Select" Then
+   If Value = "Selecionar" Then
       This.ActiveStatus = Empty
    Else
       This.ActiveStatus = Value
    End If
 End Property
+
+

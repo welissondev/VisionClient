@@ -17,7 +17,7 @@ End Type
 
 Private This As Class
 
-Public Sub Class_Initialize()
+Private Sub Class_Initialize()
     Set This.Connection = New ADODB.Connection
     Set This.Command = New ADODB.Command
     Set This.RecordSet = New ADODB.RecordSet
@@ -48,11 +48,11 @@ End Property
 
 Public Function OpenConnection() As ADODB.Connection
    If This.Connection.State = False Then
-       Call This.Connection.Open(AppSettings.ConnectionString)
+       Call This.Connection.Open(SysProperty.ConnectionString)
    End If
-   
    Set OpenConnection = This.Connection
 End Function
+
 Public Sub CloseConnection()
     If This.Connection.State = True Then This.Connection.Close
 End Sub
@@ -66,7 +66,7 @@ Public Function ExecuteNonQuery(ByVal Sql As String) As Boolean
     This.Command.CommandText = Sql
     
     Call This.Command.Execute(RecordsAffected)
-    
+   
     ExecuteNonQuery = RecordsAffected
     
 End Function
@@ -88,6 +88,7 @@ Optional ParameterDirection As ParameterDirectionEnum = adParamInput, Optional S
    This.Command.Parameters.Append This.Command.CreateParameter(Name, DataType, _
    ParameterDirection, Size, Value)
 End Sub
+
 Public Sub ClearParameter()
    
    Dim i As Integer

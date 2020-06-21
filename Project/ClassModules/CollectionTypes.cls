@@ -11,35 +11,35 @@ Option Explicit
 
 Public Function ListYesNo(ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Select")
+      .AddItem ("Selecionar")
       .AddItem ("Sim")
       .AddItem ("Não")
-      .Text = "Select"
+      .Text = "Selecionar"
    End With
 End Function
 
 Public Function ListSexes(ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Select")
+      .AddItem ("Selecionar")
       .AddItem ("Masculino")
       .AddItem ("Feminino")
-      .Text = "Select"
+      .Text = "Selecionar"
    End With
 End Function
 
 Public Function ListCivilStatus(ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Select")
+      .AddItem ("Selecionar")
       .AddItem ("Casado(a)")
       .AddItem ("Solteiro(a)")
       .AddItem ("Divorciado(a)")
-      .Text = "Select"
+      .Text = "Selecionar"
    End With
 End Function
 
 Public Function ListStates(ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Select")
+      .AddItem ("Selecionar")
       .AddItem ("Acre")
       .AddItem ("Alagoas")
       .AddItem ("Amapá")
@@ -67,22 +67,22 @@ Public Function ListStates(ComboBox As MSForms.ComboBox)
       .AddItem ("São Paulo")
       .AddItem ("Sergipe")
       .AddItem ("Tocantins")
-      .Text = "Select"
+      .Text = "Selecionar"
    End With
 End Function
 
-Public Function ListCustomerTypes(ComboBox As MSForms.ComboBox)
+Public Function ListClientTypes(ComboBox As MSForms.ComboBox)
    With ComboBox
-       .AddItem ("Select")
+       .AddItem ("Selecionar")
        .AddItem ("Física")
        .AddItem ("Jurídica")
-       .Text = "Select"
+       .Text = "Selecionar"
    End With
 End Function
 
 Public Function ListCompanyTypes(ComboBox As MSForms.ComboBox)
    With ComboBox
-       .AddItem ("Select")
+       .AddItem ("Selecionar")
        .AddItem ("Matriz")
        .AddItem ("Filial")
        .AddItem ("Único")
@@ -91,12 +91,12 @@ End Function
 
 Public Function ListCompanyTypeActions(ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Select")
+      .AddItem ("Selecionar")
       .AddItem ("Empresário Individual")
       .AddItem ("Microempreendedor - MEI")
       .AddItem ("Empresa Individual - EIRELI")
       .AddItem ("Sociedade Empresária")
       .AddItem ("Sociedade Simples")
-      .Text = "Select"
+      .Text = "Selecionar"
    End With
 End Function

@@ -1,13 +1,13 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ExceptionErrorNotifier 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormExceptionErrorNotifier 
    ClientHeight    =   7320
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   7065
-   OleObjectBlob   =   "ExceptionErrorNotifier.frx":0000
+   OleObjectBlob   =   "FormExceptionErrorNotifier.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "ExceptionErrorNotifier"
+Attribute VB_Name = "FormExceptionErrorNotifier"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True

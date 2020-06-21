@@ -7,7 +7,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Option Explicit: Option Compare Binary
+Option Explicit
+Option Compare Binary
+
 
 Private Const DEFAULT_BLOCK_SIZE As Integer = 16
 
@@ -28,7 +30,7 @@ Public Property Get Length() As Integer
 End Property
 
 Public Property Get Capacity() As Integer
-    GetCapacity = Len(This.Buffer)
+    Capacity = Len(This.Buffer)
 End Property
 
 Public Function Append(ByVal Value As String) As StringBuilder
