@@ -37,7 +37,32 @@ Public Sub ActiveWorkbookRefreshAll()
 End Sub
 
 Public Sub SubmitException()
-   FormExceptionErrorNotifier.Show
+
+    Dim FileName As String
+    Dim TextFile As Object
+    Dim CurrenLine As String
+    
+    With New FileSystemObject
+    
+        FileName = SysDirectory.PathAppLog & "\Error.txt"
+            
+        Set TextFile = .OpenTextFile(FileName, 1, True)
+              While Not TextFile.AtEndOfStream
+                  DoEvents
+                  CurrenLine = CurrenLine & TextFile.ReadLine & vbCrLf
+              Wend
+          TextFile.Close
+        
+        Set TextFile = .OpenTextFile(FileName, 2, True)
+          With TextFile
+              .WriteLine "Error:" & Err.Number & Space(1) & "Description:" & Err.Description & vbCrLf & vbCrLf & CurrenLine
+              .Close
+          End With
+              
+    End With
+     
+    FormExceptionErrorNotifier.Show
+    
 End Sub
 
 Public Sub DefineUserFormStyle(Form As MSForms.UserForm)

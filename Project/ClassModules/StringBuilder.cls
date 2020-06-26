@@ -48,9 +48,9 @@ Public Function Insert(ByVal Index As Integer, ByVal Value As String) As StringB
    Dim Rest As String
    
    If Index < 0 Then
-     err.Raise 9
+     Err.Raise 9
    ElseIf This.Length < Index Then
-     err.Raise 9
+     Err.Raise 9
    End If
      
    ValueLength = Len(Value)

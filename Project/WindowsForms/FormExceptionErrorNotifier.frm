@@ -38,12 +38,12 @@ Private Sub SetError()
          .Append "-----------------------------------------------" & vbCr
          
          .Append vbCr
-         .Append err.Description
+         .Append Err.Description
          
          .Append vbCr
          .Append vbCr
          
-         .Append "Número: " & err.Number
+         .Append "Número: " & Err.Number
          
          .Append vbCr
          .Append vbCr
@@ -57,7 +57,7 @@ Private Sub SetError()
       ErrorCaption = "Erro Em Tempo De Execução :("
       ErrorDescription = ErrorStrBilder.ToString
       
-      err.Clear
+      Err.Clear
       
 End Sub
 
