@@ -10,7 +10,6 @@ Attribute VB_Exposed = False
 Option Explicit
 Option Compare Binary
 
-
 Private Const DEFAULT_BLOCK_SIZE As Integer = 16
 
 Private Type Class

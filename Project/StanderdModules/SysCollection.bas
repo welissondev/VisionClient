@@ -1,33 +1,25 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "CollectionTypes"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Name = "SysCollection"
 Option Explicit
 
-Public Function ListYesNo(ComboBox As MSForms.ComboBox)
+Public Property Let YesNo(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Sim")
       .AddItem ("Não")
       .Text = "Selecionar"
    End With
-End Function
+End Property
 
-Public Function ListSexes(ComboBox As MSForms.ComboBox)
+Public Property Let Sexes(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Masculino")
       .AddItem ("Feminino")
       .Text = "Selecionar"
    End With
-End Function
+End Property
 
-Public Function ListCivilStatus(ComboBox As MSForms.ComboBox)
+Public Property Let CivilStatus(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Casado(a)")
@@ -35,9 +27,9 @@ Public Function ListCivilStatus(ComboBox As MSForms.ComboBox)
       .AddItem ("Divorciado(a)")
       .Text = "Selecionar"
    End With
-End Function
+End Property
 
-Public Function ListStates(ComboBox As MSForms.ComboBox)
+Public Property Let StatesLocation(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Acre")
@@ -69,27 +61,27 @@ Public Function ListStates(ComboBox As MSForms.ComboBox)
       .AddItem ("Tocantins")
       .Text = "Selecionar"
    End With
-End Function
+End Property
 
-Public Function ListClientTypes(ComboBox As MSForms.ComboBox)
+Public Property Let ClientTypes(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
        .AddItem ("Selecionar")
        .AddItem ("Física")
        .AddItem ("Jurídica")
        .Text = "Selecionar"
    End With
-End Function
+End Property
 
-Public Function ListCompanyTypes(ComboBox As MSForms.ComboBox)
+Public Property Let CompanyTypes(ComboBox As MSForms.ComboBox)
    With ComboBox
        .AddItem ("Selecionar")
        .AddItem ("Matriz")
        .AddItem ("Filial")
        .AddItem ("Único")
    End With
-End Function
+End Property
 
-Public Function ListCompanyTypeActions(ComboBox As MSForms.ComboBox)
+Public Property Let CompanyTypeActions(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Empresário Individual")
@@ -99,4 +91,5 @@ Public Function ListCompanyTypeActions(ComboBox As MSForms.ComboBox)
       .AddItem ("Sociedade Simples")
       .Text = "Selecionar"
    End With
-End Function
+End Property
+

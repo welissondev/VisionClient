@@ -1,20 +1,81 @@
 Attribute VB_Name = "SysFunction"
 Option Explicit
 
-'*******************************************************
-'Nesse módulo fica todos as funções e métodos que estão
-'disponiveis publicamente para todo o sistema
-'*******************************************************
+Public Function CreateFolder(ByVal Path As String) As Folder
+   
+   With New FileSystemObject
+   
+      If .FolderExists(Path) = False Then
+         Set CreateFolder = .CreateFolder(Path)
+      End If
+      
+   End With
+   
+End Function
 
-Public Function FindValueInString(StrX As String, StrY As String) As Boolean
+Public Function CheckFolderExists(FileSpec As String, Optional ByVal Create As Boolean = False) As Boolean
+   
+   Dim ExistsFile As Boolean
+   
+   With New FileSystemObject
+
+      Select Case .FolderExists(FileSpec)
+      
+         Case Is = True
+            
+            ExistsFile = True
+            
+         Case Is = False
+         
+            If Create = True Then
+                Call .CreateFolder(FileSpec)
+                ExistsFile = True
+            End If
+            
+      End Select
+        
+   End With
+   
+   CheckFolderExists = ExistsFile
+     
+End Function
+
+
+Public Function CheckIfUserYoutubeSubscribe() As Boolean
+   
+   With New FileSystemObject
+      
+      Dim TextFile As Variant
+      Dim Line As String
+      
+      Set TextFile = .OpenTextFile(SysDirectory.PathAppDef & "\Def.txt", ForReading, True)
+      
+         While Not TextFile.AtEndOfStream
+            
+            Line = TextFile.ReadLine
+            
+            If Line = "YoutubeSubscrib = Ok" Then
+               CheckIfUserYoutubeSubscribe = True
+               End
+            End If
+                
+         Wend
+      TextFile.Close
+      
+   End With
+   
+End Function
+
+Public Function FindValueInString(ByVal StrX As String, ByVal StrY As String) As Boolean
     FindValueInString = VBA.InStr(1, StrX, StrY, vbTextCompare)
 End Function
 
-Public Function CheckConnectionProvider(Provider As String) As Integer
+Public Function CheckConnectionProvider(ByVal Provider As String) As Integer
 
    On Error GoTo Exception
    
       Dim Database As ConnectionAccess
+      
          Set Database = New ConnectionAccess
              Database.OpenConnection
              
@@ -23,6 +84,7 @@ Public Function CheckConnectionProvider(Provider As String) As Integer
              End If
              
          Set Database = Nothing
+         
    Exit Function
    
 Exception:
@@ -32,128 +94,3 @@ Exception:
    
 End Function
 
-Public Sub IndentyDataTable(TableName As String, Optional Indent As Integer = 1, Optional SelectRange As String = "A1")
-
-   Application.GoTo Reference:=TableName
-      With Selection
-         .HorizontalAlignment = xlGeneral
-         .VerticalAlignment = xlCenter
-         .InsertIndent Indent
-      End With
-   Range(SelectRange).Select
-   
-End Sub
-
-Public Sub ClearTableContents(TableName As String, Optional SelectRange As String = "A1")
-
-   Application.GoTo Reference:=TableName
-   Selection.ClearContents
-   Range(SelectRange).Select
-   
-End Sub
-
-Public Sub ProtectSheet(Sheet As Worksheet, PassWord As String)
-   Sheet.Protect PassWord:=PassWord
-End Sub
-Public Sub UnprotectSheet(Sheet As Worksheet, PassWord As String)
-   Sheet.Unprotect PassWord:=PassWord
-End Sub
-
-Public Sub ActiveWorkbookRefreshAll()
-   ActiveWorkbook.RefreshAll
-End Sub
-
-Public Sub SubmitException()
-   FormExceptionErrorNotifier.Show
-End Sub
-
-Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
-
-   On Error GoTo Exception
-   
-      Dim Control As MSForms.Control
-   
-      Dim TextBorderColor, TextBackColor, TextForeColor, TextBorderStyle, TextFont As Variant
-         TextFont = "Arial"
-         TextBackColor = &H80000004
-         TextBorderColor = 14540253
-         TextForeColor = 1842204
-         TextBorderStyle = 1
-      
-      Dim LabelForeColor, LabelFont As Variant
-         LabelForeColor = &H996600
-         LabelFont = "Calibri"
-         
-      Dim FrameBackColor, FrameForeColor, FrameBorderColor, FrameFont As Variant
-         FrameBorderColor = 14540253
-         FrameForeColor = &H996600
-         FrameBackColor = &HFFFFFF
-         FrameFont = "Calibri"
-      
-      Form.Font = "Calibri"
-      Form.BackColor = 13408512
-      
-      For Each Control In Form.Controls
-         
-         Select Case TypeName(Control)
-            Case Is = "TextBox"
-               With Control
-                  .BorderColor = TextBorderColor
-                  .BackColor = TextBackColor
-                  .ForeColor = TextForeColor
-                  .BorderStyle = TextBorderStyle
-                  With .Font
-                     .Name = TextFont
-                     .Size = 10
-                  End With
-               End With
-            Case Is = "ComboBox"
-               With Control
-                  .BorderColor = TextBorderColor
-                  .BackColor = TextBackColor
-                  .ForeColor = TextForeColor
-                  .BorderStyle = TextBorderStyle
-                  With .Font
-                     .Name = TextFont
-                     .Size = 10
-                  End With
-               End With
-               
-            Case Is = "Label"
-               With Control
-                  .ForeColor = LabelForeColor
-                  With .Font
-                     .Name = LabelFont
-                     .Size = 11
-                  End With
-               End With
-               
-            Case Is = "Frame"
-               With Control
-                  .BorderColor = FrameBorderColor
-                  .BackColor = FrameBackColor
-                  .ForeColor = FrameForeColor
-                  With .Font
-                     .Name = FrameFont
-                     .Size = 10
-                  End With
-               End With
-               
-            Case Is = "OptionButton"
-               With Control
-                  .ForeColor = &H996600
-                  With .Font
-                     .Name = TextFont
-                     .Size = 10
-                  End With
-               End With
-         End Select
-      Next
-      
-   Exit Sub
-   
-Exception:
-   
-   Call SysFunction.SubmitException
-   
-End Sub

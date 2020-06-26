@@ -35,9 +35,9 @@ Attribute ToJustDotString.VB_VarHelpID = -1
 Private Sub CanNotString_Change()
    Dim ret As String
    Dim i As Integer
-       For i = 1 To Len(CanNotString.Text)
-           If Asc(Mid(CanNotString.Text, i, 1)) >= 48 And Asc(Mid(CanNotString.Text, i, 1)) <= 58 Then
-               ret = ret & Mid(CanNotString.Text, i, 1)
+       For i = 1 To Len(CanNotString.Value)
+           If Asc(Mid(CanNotString.Value, i, 1)) >= 48 And Asc(Mid(CanNotString.Value, i, 1)) <= 58 Then
+               ret = ret & Mid(CanNotString.Value, i, 1)
            End If
        Next i
    CanNotString = ret
@@ -93,20 +93,20 @@ Private Sub ToSocialSecutiryAndNationalRegistry_KeyPress(ByVal KeyAscii As MSFor
            .SelText = "."
        ElseIf Len(.Text) = 6 Then
            .Text = Replace(.Text, ".", "")
-           .Text = Format(.Value, "00"".""000"".")
+           .Text = Format(.Text, "00"".""000"".")
        ElseIf Len(.Text) = 8 Then
            .Text = Replace(.Text, ".", "")
-           .Text = Format(.Value, "000"".""000"".")
+           .Text = Format(.Text, "000"".""000"".")
        ElseIf Len(.Text) = 10 Then
            .Text = Replace(.Text, ".", "")
-           .Text = Format(.Value, "00"".""000"".""000")
+           .Text = Format(.Text, "00"".""000"".""000")
        ElseIf Len(.Text) = 11 Then
            .Text = Replace(.Text, ".", "")
-           .Text = Format(.Value, "000"".""000"".""000""-")
+           .Text = Format(.Text, "000"".""000"".""000""-")
        ElseIf Len(.Text) = 15 Then
            .Text = Replace(.Text, ".", "")
            .Text = Replace(.Text, "-", "")
-           .Text = Format(.Value, "00"".""000"".""000""/""0000""-")
+           .Text = Format(.Text, "00"".""000"".""000""/""0000""-")
        End If
    End With
 End Sub
@@ -171,7 +171,7 @@ Private Sub ToOnlyNull_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
 End Sub
 Private Sub ToCurrency_Change()
    Dim i As Integer, t As String
-   If Not IsNumeric(ToCurrency.Text) Then ToCurrency.Text = Empty
+   If Not IsNumeric(ToCurrency.Value) Then ToCurrency.Value = Empty
        With ToCurrency
            t = .Text
            i = Len(t) - .SelStart

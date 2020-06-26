@@ -26,11 +26,12 @@ End Type
 Private This As Class
 Private Mask() As New FormatterMask
 
+
 Private Sub UserForm_Initialize()
    
    Call FormatMask
    Call FillComboBoxes
-   Call SysFunction.DefineUserFormStyle(Me)
+   Call SysMethod.DefineUserFormStyle(Me)
    Call LoadImageNothing(ImageClient)
    
 End Sub
@@ -80,14 +81,14 @@ Private Sub ButtonSelectPhoto_Click()
    
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
 Private Sub CheckGenerateCode_Click()
    
    On Error GoTo Exception
-   
+
       Dim Control As MSForms.CheckBox
       Dim Code As CodeGenerator
       
@@ -115,7 +116,7 @@ Private Sub CheckGenerateCode_Click()
    
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
@@ -188,7 +189,7 @@ Private Sub ButtonSave_Click()
       
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
     
 End Sub
 
@@ -203,10 +204,10 @@ Private Sub ButtonClear_Click()
          Select Case TypeName(Control)
             
             Case Is = "TextBox"
-               Control.Text = Empty
+               Control.Value = Empty
             
             Case Is = "ComboBox"
-               Control.Text = "Selecionar"
+               Control.Value = "Selecionar"
             
             Case Is = "CheckBox"
                Control.Value = False
@@ -235,7 +236,7 @@ Private Sub ButtonClear_Click()
 
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
@@ -270,7 +271,7 @@ Private Sub ButtonDelete_Click()
    
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
@@ -293,26 +294,22 @@ Private Sub LoadImageNothing(Image As MSForms.Image)
 
 Exception:
       
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
 Private Sub FillComboBoxes()
 
    On Error GoTo Exception
-   
-      With New CollectionTypes
-          Call .ListSexes(BoxSexes)
-          Call .ListCivilStatus(BoxCivilStatus)
-          Call .ListStates(BoxStates)
-          Call .ListYesNo(BoxActiveStatus)
-      End With
-      
+      SysCollection.YesNo() = BoxActiveStatus
+      SysCollection.Sexes() = BoxSexes
+      SysCollection.CivilStatus() = BoxCivilStatus
+      SysCollection.StatesLocation() = BoxStates
    Exit Sub
    
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
@@ -348,7 +345,7 @@ Private Sub FormatMask()
    
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
    
 End Sub
 
@@ -407,14 +404,14 @@ Public Sub SetDetails(Id As Integer)
       
 Exception:
 
-   Call SysFunction.SubmitException
+   Call SysMethod.SubmitException
       
 End Sub
 
 Private Property Get CurrentPhoto() As String
-   CurrentPhoto = SysProperty.ClientPhotosDirectory & "\" & This.PhotoNumber & ".jpg"
+   CurrentPhoto = SysDirectory.PathClientPhoto & "\" & This.PhotoNumber & ".jpg"
 End Property
 
 Private Property Get ImageNothing() As String
-   ImageNothing = SysProperty.AppFileIconsDirectory & "\ImageNothing.jpg"
+   ImageNothing = SysDirectory.PathAppFileIcon & "\ImageNothing.jpg"
 End Property

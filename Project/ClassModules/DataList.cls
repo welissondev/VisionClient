@@ -46,8 +46,6 @@ Public Function GetValues() As String
    
 End Function
 
-
-
 Private Sub Class_Terminate()
    Set DataList = Nothing
 End Sub

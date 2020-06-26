@@ -1,21 +1,9 @@
 Attribute VB_Name = "SysProperty"
 Option Explicit
 
-'***************************************************
-'Nesse módulo fica todos as propriedades que estão
-'disponiveis publicamente para todo o sistema
-'***************************************************
-
 Public Property Get ConnectionString() As String
-   ConnectionString = "Provider = " & SheetAppUserDefination.BoxProviderSelected.Text & _
-   "; Data Source = " & ThisWorkbook.Path & "\App\Data\VisionBase.mdb"
-End Property
-
-Public Property Get ClientPhotosDirectory() As String
-   ClientPhotosDirectory = ThisWorkbook.Path & "\User\Vision\ClientPhotos"
-End Property
-Public Property Get AppFileIconsDirectory() As String
-   AppFileIconsDirectory = ThisWorkbook.Path & "\App\File\Icons"
+   ConnectionString = "Provider = " & SheetAppUserDefination.BoxProviderSelected.Value & _
+   "; Data Source = " & SysDirectory.PathSheet & "\App\Data\VisionBase.mdb"
 End Property
 
 Public Property Get AppVersion() As String
@@ -31,3 +19,8 @@ End Property
 Public Property Get CompanySite() As String
    CompanySite = "diarioexcel.com.br"
 End Property
+
+Public Property Get YoutubeChannel()
+   YoutubeChannel = "https://www.youtube.com/channel/UCSJAAxUzTj-qVVIKaqswQww?sub_confirmation=1"
+End Property
+
