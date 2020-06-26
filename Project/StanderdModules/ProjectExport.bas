@@ -1,4 +1,4 @@
-Attribute VB_Name = "VBAExport"
+Attribute VB_Name = "ProjectExport"
 Option Explicit
 
 Private Work As Workbook
@@ -153,7 +153,6 @@ Excption:
     Set FileStream = Nothing
     
 End Function
-
 
 Private Function ExportVBComponent(Conponent As VBIDE.VBComponent, FolderName As String, Optional FileName As String, _
 Optional OverwriteExisting As Boolean = True) As Boolean
