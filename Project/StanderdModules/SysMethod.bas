@@ -119,11 +119,13 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
                
             Case Is = "Label"
                With Control
-                  .ForeColor = LabelForeColor
-                  With .Font
-                     .Name = LabelFont
-                     .Size = 11
-                  End With
+                  If Control.Tag <> "Title" Then
+                      .ForeColor = LabelForeColor
+                      With .Font
+                         .Name = LabelFont
+                         .Size = 11
+                      End With
+                  End If
                End With
                
             Case Is = "Frame"

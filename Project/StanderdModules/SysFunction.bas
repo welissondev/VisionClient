@@ -1,6 +1,23 @@
 Attribute VB_Name = "SysFunction"
 Option Explicit
 
+
+Public Function SelectFolder(Optional ByVal Title As String = "Nome da Pasta", _
+Optional ByVal InitialFileName As String = Empty, Optional ByVal _
+AllowMultiSelect As Boolean = False) As String
+    
+    On Error Resume Next
+    
+      With Application.FileDialog(msoFileDialogFolderPicker)
+          .Title = Title
+          .InitialFileName = InitialFileName
+          .AllowMultiSelect = AllowMultiSelect
+          .Show
+          SelectFolder = .SelectedItems(1)
+      End With
+    
+End Function
+
 Public Function CreateFolder(ByVal Path As String) As Folder
    
    With New FileSystemObject
