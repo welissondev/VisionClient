@@ -1,10 +1,5 @@
 Attribute VB_Name = "RunTest"
+Public Sub RunCode()
 
-Private Sub TestCode()
-  With New FileSystemObject
-      Dim Exists As Boolean
       
-      Exists = .exe
-      
-  End With
 End Sub

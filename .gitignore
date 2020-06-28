@@ -21,3 +21,5 @@ Backup of *.doc*
 # Visio autosave temporary files
 *.~vsd*
 
+*.rar
+*.zip

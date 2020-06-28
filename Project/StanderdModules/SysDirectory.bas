@@ -5,8 +5,12 @@ Public Property Get PathSheet() As String
     PathSheet = ThisWorkbook.Path
 End Property
 
-Public Property Get PathClientPhoto() As String
-    PathClientPhoto = ThisWorkbook.Path & "\User\Vision\ClientPhotos"
+Public Property Get PathUserFileClientPhoto() As String
+    PathUserFileClientPhoto = ThisWorkbook.Path & "\User\File\ClientPhoto"
+End Property
+
+Public Property Get PathUserDef() As String
+    PathUserDef = ThisWorkbook.Path & "\User\Def"
 End Property
 
 Public Property Get PathAppFileIcon() As String

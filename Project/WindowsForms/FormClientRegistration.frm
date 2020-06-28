@@ -409,7 +409,7 @@ Exception:
 End Sub
 
 Private Property Get CurrentPhoto() As String
-   CurrentPhoto = SysDirectory.PathClientPhoto & "\" & This.PhotoNumber & ".jpg"
+   CurrentPhoto = SysDirectory.PathUserFileClientPhoto & "\" & This.PhotoNumber & ".jpg"
 End Property
 
 Private Property Get ImageNothing() As String
