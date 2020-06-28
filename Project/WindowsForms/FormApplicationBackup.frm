@@ -15,18 +15,35 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private InitialFileName As String
-
-
-Private Sub ButtonSelectBackupLocation_Click()
-    TextDirectoryPath.Text = SysFunction.SelectFolder()
-End Sub
+Private SelectedFolderPath As String
 
 Private Sub UserForm_Initialize()
     
     On Error GoTo Exception
       
-      Call FormDefination
+        Call SysMethod.DefineUserFormStyle(Me)
+        
+        SelectedFolderPath = GetSelectedPath()
+        TextSelectedFolderPath = SelectedFolderPath
+        
+    Exit Sub
+    
+Exception:
+    
+    Call SysMethod.SubmitException
+    
+End Sub
+
+
+Private Sub ButtonSelectBackupLocation_Click()
+    
+    On Error GoTo Exception
+    
+        SelectedFolderPath = SysFunction.SelectFolder()
+        
+        If SelectedFolderPath <> Empty Then
+            TextSelectedFolderPath.Text = SelectedFolderPath
+        End If
     
     Exit Sub
     
@@ -37,12 +54,88 @@ Exception:
 End Sub
 
 
-Private Sub FormDefination()
-
-    Call SysMethod.DefineUserFormStyle(Me)
+Private Sub ButtonGenerateBackup_Click()
     
-    InitialFileName = SysDirectory.PathSheet & "\User\Backup"
+    On Error GoTo Exception
     
-    TextDirectoryPath.Text = InitialFileName
-
+        Dim BackupFileName As String
+        Dim PathToCopyFile As String
+        
+        If TextSelectedFolderPath.Text = Empty Then
+              MsgBox "Selecione um diretório para salvar o backup!", _
+              vbExclamation, "SELECIONE UMA PASTA"
+            Exit Sub
+        End If
+         
+        BackupFileName = "Backup-" & Format(Now(), "dd.MM.yyyy_hh.mm.ss") & "_" & SysProperty.AppName
+        PathToCopyFile = SysDirectory.PathSheet
+        
+        MousePointer = fmMousePointerAppStarting
+        
+        With New FileZipper
+            
+            .FileName = BackupFileName
+            .SourcePath = PathToCopyFile
+            .DestinationPath = SelectedFolderPath
+            
+            If .ZipFile() = True Then
+                
+                Call SaveSelectedPath
+                
+                MsgBox "Backup gerado com sucesso!", vbInformation, "SUCESSO"
+                      
+            End If
+            
+        End With
+        
+      MousePointer = fmMousePointerDefault
+    
+    Exit Sub
+    
+Exception:
+    
+    MousePointer = fmMousePointerDefault
+    Call SysMethod.SubmitException
+    
 End Sub
+
+Private Sub SaveSelectedPath()
+
+    Dim FileName As String
+    Dim TextFile As Object
+
+    With New FileSystemObject
+    
+        FileName = SysDirectory.PathUserDef & "\BackupPath.txt"
+                 
+        Set TextFile = .OpenTextFile(FileName, 2, True)
+          With TextFile
+              .WriteLine SelectedFolderPath
+              .Close
+          End With
+              
+    End With
+    
+End Sub
+Private Function GetSelectedPath() As String
+
+    Dim FileName As String
+    Dim TextFile As Object
+    
+    With New FileSystemObject
+    
+        FileName = SysDirectory.PathUserDef & "\BackupPath.txt"
+            
+        Set TextFile = .OpenTextFile(FileName, 1, True)
+              While Not TextFile.AtEndOfStream
+                  GetSelectedPath = TextFile.ReadLine
+              Wend
+          TextFile.Close
+             
+    End With
+    
+End Function
+
+
+
+

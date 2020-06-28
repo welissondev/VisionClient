@@ -1,19 +1,21 @@
 Attribute VB_Name = "SysFunction"
 Option Explicit
 
-
-Public Function SelectFolder(Optional ByVal Title As String = "Nome da Pasta", _
+Public Function SelectFolder(Optional ByVal Title As String = Empty, _
 Optional ByVal InitialFileName As String = Empty, Optional ByVal _
 AllowMultiSelect As Boolean = False) As String
     
-    On Error Resume Next
-    
       With Application.FileDialog(msoFileDialogFolderPicker)
+          
           .Title = Title
           .InitialFileName = InitialFileName
           .AllowMultiSelect = AllowMultiSelect
           .Show
-          SelectFolder = .SelectedItems(1)
+          
+          If .SelectedItems.Count > 0 Then
+              SelectFolder = .SelectedItems(1)
+          End If
+             
       End With
     
 End Function
@@ -57,6 +59,16 @@ Public Function CheckFolderExists(FileSpec As String, Optional ByVal Create As B
      
 End Function
 
+Public Function CheckFileExists(ByVal FileSpec As String) As Boolean
+    
+    With New FileSystemObject
+        
+        CheckFileExists = .FileExists(FileSpec)
+        
+    End With
+    
+End Function
+
 
 Public Function CheckIfUserYoutubeSubscribe() As Boolean
    
@@ -70,7 +82,7 @@ Public Function CheckIfUserYoutubeSubscribe() As Boolean
          While Not TextFile.AtEndOfStream
             
             Line = TextFile.ReadLine
-            
+      
             If Line = "YoutubeSubscrib = Ok" Then
                CheckIfUserYoutubeSubscribe = True
                End

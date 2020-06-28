@@ -10,7 +10,7 @@ Public Property Get AppVersion() As String
    AppVersion = "1.3.17.013"
 End Property
 Public Property Get AppName() As String
-   AppName = "Sistema Vision Client"
+   AppName = "VisionClient"
 End Property
 
 Public Property Get CompanyName() As String
