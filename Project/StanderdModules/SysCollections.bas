@@ -1,25 +1,25 @@
-Attribute VB_Name = "SysCollection"
+Attribute VB_Name = "SysCollections"
 Option Explicit
 
-Public Property Let YesNo(ByVal ComboBox As MSForms.ComboBox)
+Public Sub SetYesNo(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Sim")
       .AddItem ("Não")
       .Text = "Selecionar"
    End With
-End Property
+End Sub
 
-Public Property Let Sexes(ByVal ComboBox As MSForms.ComboBox)
+Public Sub SetSexes(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Masculino")
       .AddItem ("Feminino")
       .Text = "Selecionar"
    End With
-End Property
+End Sub
 
-Public Property Let CivilStatus(ByVal ComboBox As MSForms.ComboBox)
+Public Sub SetCivilStatus(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Casado(a)")
@@ -27,9 +27,9 @@ Public Property Let CivilStatus(ByVal ComboBox As MSForms.ComboBox)
       .AddItem ("Divorciado(a)")
       .Text = "Selecionar"
    End With
-End Property
+End Sub
 
-Public Property Let StatesLocation(ByVal ComboBox As MSForms.ComboBox)
+Public Sub SetStatesLocation(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Acre")
@@ -61,27 +61,27 @@ Public Property Let StatesLocation(ByVal ComboBox As MSForms.ComboBox)
       .AddItem ("Tocantins")
       .Text = "Selecionar"
    End With
-End Property
+End Sub
 
-Public Property Let ClientTypes(ByVal ComboBox As MSForms.ComboBox)
+Public Sub SetClientTypes(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
        .AddItem ("Selecionar")
        .AddItem ("Física")
        .AddItem ("Jurídica")
        .Text = "Selecionar"
    End With
-End Property
+End Sub
 
-Public Property Let CompanyTypes(ComboBox As MSForms.ComboBox)
+Public Sub SetCompanyTypes(ComboBox As MSForms.ComboBox)
    With ComboBox
        .AddItem ("Selecionar")
        .AddItem ("Matriz")
        .AddItem ("Filial")
        .AddItem ("Único")
    End With
-End Property
+End Sub
 
-Public Property Let CompanyTypeActions(ByVal ComboBox As MSForms.ComboBox)
+Public Sub SetCompanyTypeActions(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
       .AddItem ("Selecionar")
       .AddItem ("Empresário Individual")
@@ -91,5 +91,5 @@ Public Property Let CompanyTypeActions(ByVal ComboBox As MSForms.ComboBox)
       .AddItem ("Sociedade Simples")
       .Text = "Selecionar"
    End With
-End Property
+End Sub
 

@@ -1,4 +1,4 @@
-Attribute VB_Name = "SysFunction"
+Attribute VB_Name = "SysFunctions"
 Option Explicit
 
 Public Function SelectFolder(Optional ByVal Title As String = Empty, _
@@ -77,18 +77,18 @@ Public Function CheckIfUserYoutubeSubscribe() As Boolean
       Dim TextFile As Variant
       Dim Line As String
       
-      Set TextFile = .OpenTextFile(SysDirectory.PathAppDef & "\Def.txt", ForReading, True)
+      Set TextFile = .OpenTextFile(SysDirectorys.PathAppDef & "\Def.txt", ForReading, True)
       
-         While Not TextFile.AtEndOfStream
+        Do While Not TextFile.AtEndOfStream
             
             Line = TextFile.ReadLine
       
             If Line = "YoutubeSubscrib = Ok" Then
                CheckIfUserYoutubeSubscribe = True
-               End
+               Exit Do
             End If
                 
-         Wend
+         Loop
       TextFile.Close
       
    End With

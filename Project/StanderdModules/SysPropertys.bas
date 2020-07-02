@@ -1,9 +1,9 @@
-Attribute VB_Name = "SysProperty"
+Attribute VB_Name = "SysPropertys"
 Option Explicit
 
 Public Property Get ConnectionString() As String
    ConnectionString = "Provider = " & SheetAppUserDefination.BoxProviderSelected.Value & _
-   "; Data Source = " & SysDirectory.PathSheet & "\App\Data\VisionBase.mdb"
+   "; Data Source = " & SysDirectorys.PathSheet & "\App\Data\VisionBase.mdb"
 End Property
 
 Public Property Get AppVersion() As String

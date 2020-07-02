@@ -1,4 +1,4 @@
-Attribute VB_Name = "SysDirectory"
+Attribute VB_Name = "SysDirectorys"
 Option Explicit
 
 Public Property Get PathSheet() As String

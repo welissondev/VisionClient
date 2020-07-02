@@ -11,9 +11,9 @@ Option Explicit
 
 Public Function Generate(Optional Size As Integer = 8, Optional WithLetter As Boolean = False) As String
    
-   Dim i As Integer
+   Dim I As Integer
 
-   For i = 1 To Size
+   For I = 1 To Size
       Select Case WithLetter
          Case Is = False
             Generate = Generate & Int((7 * Rnd) + 1)
