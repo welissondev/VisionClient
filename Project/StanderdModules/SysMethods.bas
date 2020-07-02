@@ -1,4 +1,4 @@
-Attribute VB_Name = "SysMethod"
+Attribute VB_Name = "SysMethods"
 Option Explicit
 
 Public Sub OpenPageWeb(Url As String)
@@ -7,7 +7,7 @@ End Sub
 
 Public Sub IndentyDataTable(TableName As String, Optional Indent As Integer = 1, Optional SelectRange As String = "A1")
 
-   Application.Goto Reference:=TableName
+   Application.GoTo Reference:=TableName
       With Selection
          .HorizontalAlignment = xlGeneral
          .VerticalAlignment = xlCenter
@@ -19,7 +19,7 @@ End Sub
 
 Public Sub ClearTableContents(TableName As String, Optional SelectRange As String = "A1")
 
-   Application.Goto Reference:=TableName
+   Application.GoTo Reference:=TableName
    Selection.ClearContents
    Range(SelectRange).Select
    
@@ -44,7 +44,7 @@ Public Sub SubmitException()
     
     With New FileSystemObject
     
-        FileName = SysDirectory.PathAppLog & "\Error.txt"
+        FileName = SysDirectorys.PathAppLog & "\Error.txt"
             
         Set TextFile = .OpenTextFile(FileName, 1, True)
               While Not TextFile.AtEndOfStream
@@ -74,7 +74,7 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
       Dim TextBorderColor, TextBackColor, TextForeColor, TextBorderStyle, TextFont As Variant
          TextFont = "Arial"
          TextBackColor = &H80000004
-         TextBorderColor = 14540253
+         TextBorderColor = &H80000016
          TextForeColor = 1842204
          TextBorderStyle = 1
       
@@ -154,7 +154,7 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
    
 Exception:
    
-   Call SysMethod.SubmitException
+   Call SysMethods.SubmitException
    
 End Sub
 

@@ -19,7 +19,7 @@ Private Sub ButtonSubscribe_Click()
          Dim TextFile As Variant
          
          With New FileSystemObject
-            Set TextFile = .OpenTextFile(SysDirectory.PathAppDef & "\Def.txt", ForWriting)
+            Set TextFile = .OpenTextFile(SysDirectorys.PathAppDef & "\Def.txt", ForWriting)
             
             With TextFile
                .WriteLine "YoutubeSubscrib = Ok"
@@ -29,11 +29,11 @@ Private Sub ButtonSubscribe_Click()
 
          End With
          
-         Call SysMethod.OpenPageWeb(SysProperty.YoutubeChannel)
+         Call SysMethods.OpenPageWeb(SysPropertys.YoutubeChannel)
 
       Exit Sub
 error:
       Unload Me
-      SysMethod.SubmitException
+      SysMethods.SubmitException
 End Sub
 

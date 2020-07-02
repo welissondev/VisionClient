@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormApplicationBackup 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormBackupGenerator 
    Caption         =   "Assistente de BackUp"
    ClientHeight    =   7110
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   10005
-   OleObjectBlob   =   "FormApplicationBackup.frx":0000
+   OleObjectBlob   =   "FormBackupGenerator.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "FormApplicationBackup"
+Attribute VB_Name = "FormBackupGenerator"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -21,7 +21,7 @@ Private Sub UserForm_Initialize()
     
     On Error GoTo Exception
       
-        Call SysMethod.DefineUserFormStyle(Me)
+        Call SysMethods.DefineUserFormStyle(Me)
         
         SelectedFolderPath = GetSelectedPath()
         TextSelectedFolderPath = SelectedFolderPath
@@ -30,7 +30,7 @@ Private Sub UserForm_Initialize()
     
 Exception:
     
-    Call SysMethod.SubmitException
+    Call SysMethods.SubmitException
     
 End Sub
 
@@ -39,7 +39,7 @@ Private Sub ButtonSelectBackupLocation_Click()
     
     On Error GoTo Exception
     
-        SelectedFolderPath = SysFunction.SelectFolder()
+        SelectedFolderPath = SysFunctions.SelectFolder()
         
         If SelectedFolderPath <> Empty Then
             TextSelectedFolderPath.Text = SelectedFolderPath
@@ -49,7 +49,7 @@ Private Sub ButtonSelectBackupLocation_Click()
     
 Exception:
     
-    Call SysMethod.SubmitException
+    Call SysMethods.SubmitException
     
 End Sub
 
@@ -67,8 +67,8 @@ Private Sub ButtonGenerateBackup_Click()
             Exit Sub
         End If
          
-        BackupFileName = "Backup-" & Format(Now(), "dd.MM.yyyy_hh.mm.ss") & "_" & SysProperty.AppName
-        PathToCopyFile = SysDirectory.PathSheet
+        BackupFileName = "Backup-" & Format(Now(), "dd.MM.yyyy_hh.mm.ss") & "_" & SysPropertys.AppName
+        PathToCopyFile = SysDirectorys.PathSheet
         
         MousePointer = fmMousePointerAppStarting
         
@@ -95,7 +95,7 @@ Private Sub ButtonGenerateBackup_Click()
 Exception:
     
     MousePointer = fmMousePointerDefault
-    Call SysMethod.SubmitException
+    Call SysMethods.SubmitException
     
 End Sub
 
@@ -106,7 +106,7 @@ Private Sub SaveSelectedPath()
 
     With New FileSystemObject
     
-        FileName = SysDirectory.PathUserDef & "\BackupPath.txt"
+        FileName = SysDirectorys.PathUserDef & "\BackupPath.txt"
                  
         Set TextFile = .OpenTextFile(FileName, 2, True)
           With TextFile
@@ -124,7 +124,7 @@ Private Function GetSelectedPath() As String
     
     With New FileSystemObject
     
-        FileName = SysDirectory.PathUserDef & "\BackupPath.txt"
+        FileName = SysDirectorys.PathUserDef & "\BackupPath.txt"
             
         Set TextFile = .OpenTextFile(FileName, 1, True)
               While Not TextFile.AtEndOfStream

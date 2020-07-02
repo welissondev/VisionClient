@@ -34,12 +34,12 @@ Attribute ToJustDotString.VB_VarHelpID = -1
 
 Private Sub CanNotString_Change()
    Dim ret As String
-   Dim i As Integer
-       For i = 1 To Len(CanNotString.Value)
-           If Asc(Mid(CanNotString.Value, i, 1)) >= 48 And Asc(Mid(CanNotString.Value, i, 1)) <= 58 Then
-               ret = ret & Mid(CanNotString.Value, i, 1)
+   Dim I As Integer
+       For I = 1 To Len(CanNotString.Value)
+           If Asc(Mid(CanNotString.Value, I, 1)) >= 48 And Asc(Mid(CanNotString.Value, I, 1)) <= 58 Then
+               ret = ret & Mid(CanNotString.Value, I, 1)
            End If
-       Next i
+       Next I
    CanNotString = ret
 End Sub
 Private Sub ToJustDotString_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
@@ -170,17 +170,17 @@ Private Sub ToOnlyNull_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
    End If
 End Sub
 Private Sub ToCurrency_Change()
-   Dim i As Integer, t As String
+   Dim I As Integer, t As String
    If Not IsNumeric(ToCurrency.Value) Then ToCurrency.Value = Empty
        With ToCurrency
            t = .Text
-           i = Len(t) - .SelStart
+           I = Len(t) - .SelStart
            t = Replace(.Text, ",", "")
            If Len(t) < 3 Then t = String(3 - Len(t), "0") & t
            t = Mid(t, 1, Len(t) - 2) & "," & Mid(t, Len(t) - 1)
            t = Format(t, "R$#,##0.00")
            If .Text <> t Then .Text = t
-           .SelStart = Len(t) - i
+           .SelStart = Len(t) - I
        End With
 End Sub
 

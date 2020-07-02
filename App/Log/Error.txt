@@ -1,10 +1,6 @@
-Error:1004 Description:Erro de definição de aplicativo ou de definição de objeto
+Error:1004 Description:Esta fórmula não contém uma referência de intervalo ou um nome definido. 
 
-
-
-
-
-
+Error:424 Description:O objeto é obrigatório
 
 
 

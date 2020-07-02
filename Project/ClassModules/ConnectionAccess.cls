@@ -11,7 +11,7 @@ Option Explicit
 
 Private Type Class
     Connection As ADODB.Connection
-    RecordSet As ADODB.RecordSet
+    Recordset As ADODB.Recordset
     Command As ADODB.Command
 End Type
 
@@ -20,17 +20,17 @@ Private This As Class
 Private Sub Class_Initialize()
     Set This.Connection = New ADODB.Connection
     Set This.Command = New ADODB.Command
-    Set This.RecordSet = New ADODB.RecordSet
+    Set This.Recordset = New ADODB.Recordset
 End Sub
 Private Sub Class_Terminate()
    If This.Connection.State = True Then
        This.Connection.Close
    End If
-   If This.RecordSet.State = True Then
-      This.RecordSet.Close
+   If This.Recordset.State = True Then
+      This.Recordset.Close
    End If
    
-   Set This.RecordSet = Nothing
+   Set This.Recordset = Nothing
    Set This.Connection = Nothing
    Set This.Command = Nothing
 End Sub
@@ -39,16 +39,16 @@ Public Property Get Connection() As ADODB.Connection
     Set Connection = This.Connection
 End Property
 
-Public Property Get RecordSet() As ADODB.RecordSet
-    Set RecordSet = This.RecordSet
+Public Property Get Recordset() As ADODB.Recordset
+    Set Recordset = This.Recordset
 End Property
-Public Property Let RecordSet(RecordSet As ADODB.RecordSet)
-    Set This.RecordSet = RecordSet
+Public Property Let Recordset(Recordset As ADODB.Recordset)
+    Set This.Recordset = Recordset
 End Property
 
 Public Function OpenConnection() As ADODB.Connection
    If This.Connection.State = False Then
-       Call This.Connection.Open(SysProperty.ConnectionString)
+       Call This.Connection.Open(SysPropertys.ConnectionString)
    End If
    Set OpenConnection = This.Connection
 End Function
@@ -71,15 +71,15 @@ Public Function ExecuteNonQuery(ByVal Sql As String) As Boolean
     
 End Function
 
-Public Function ExecuteWithQuery(ByVal Sql As String) As ADODB.RecordSet
+Public Function ExecuteWithQuery(ByVal Sql As String) As ADODB.Recordset
 
     This.Command.ActiveConnection = OpenConnection
     This.Command.CommandType = adCmdText
     This.Command.CommandText = Sql
     This.Connection.CursorLocation = adUseClient
     
-    Set This.RecordSet = This.Command.Execute
-    Set ExecuteWithQuery = This.RecordSet
+    Set This.Recordset = This.Command.Execute
+    Set ExecuteWithQuery = This.Recordset
     
 End Function
 
@@ -89,15 +89,19 @@ Optional ParameterDirection As ParameterDirectionEnum = adParamInput, Optional S
    ParameterDirection, Size, Value)
 End Sub
 
+
 Public Sub ClearParameter()
    
-   Dim i As Integer
+   Dim I As Integer
    
    If This.Command.Parameters.Count > 0 Then
-      For i = 0 To This.Command.Parameters.Count - 1
-         Call This.Command.Parameters.Delete(i)
+      For I = 0 To This.Command.Parameters.Count - 1
+         Call This.Command.Parameters.Delete(I)
       Next
    End If
    
 End Sub
 
+Public Property Get Field(Name As String) As Variant
+    Field = Recordset.Fields(Name).Value
+End Property
