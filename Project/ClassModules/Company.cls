@@ -16,8 +16,8 @@ Private Type Class
     YourType As String
     DateDispatch As Date
     TypeAction As String
-    Ie As String
-    Cnpj As String
+    StateRegistration As String
+    NationalLegalRegistry As String
 End Type
 
 
@@ -70,18 +70,18 @@ Public Property Let TypeAction(Value As String)
 End Property
 
 
-Public Property Get Ie() As String
-    Ie = This.Ie
+Public Property Get StateRegistration() As String
+    StateRegistration = This.StateRegistration
 End Property
-Public Property Let Ie(Value As String)
-    This.Ie = Value
+Public Property Let StateRegistration(Value As String)
+    This.StateRegistration = Value
 End Property
 
 
-Public Property Get Cnpj() As String
-    Cnpj = This.Cnpj
+Public Property Get NationalLegalRegistry() As String
+    NationalLegalRegistry = This.NationalLegalRegistry
 End Property
-Public Property Let Cnpj(Value As String)
-    This.Cnpj = Value
+Public Property Let NationalLegalRegistry(Value As String)
+    This.NationalLegalRegistry = Value
 End Property
 

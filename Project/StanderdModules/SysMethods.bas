@@ -65,7 +65,7 @@ Public Sub SubmitException()
     
 End Sub
 
-Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
+Public Sub DefineUserFormStyle(Form As MSForms.UserForm, Optional ByVal MainColor As Variant = 13408512)
 
    On Error GoTo Exception
    
@@ -79,7 +79,7 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
          TextBorderStyle = 1
       
       Dim LabelForeColor, LabelFont As Variant
-         LabelForeColor = &H996600
+         LabelForeColor = MainColor
          LabelFont = "Calibri"
          
       Dim FrameBackColor, FrameForeColor, FrameBorderColor, FrameFont As Variant
@@ -89,7 +89,7 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm)
          FrameFont = "Calibri"
       
       Form.Font = "Calibri"
-      Form.BackColor = 13408512
+      Form.BackColor = MainColor
       
       For Each Control In Form.Controls
          
