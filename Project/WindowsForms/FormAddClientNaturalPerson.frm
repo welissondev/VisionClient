@@ -30,7 +30,7 @@ Private Sub UserForm_Initialize()
 
    Call FormatMask
    Call FillTextBox
-   Call SysMethods.DefineUserFormStyle(Me)
+   Call SysMethods.DefineUserFormStyle(Me, &H404040)
    Call LoadImageNothing(ImageClient)
 
 End Sub
@@ -93,7 +93,7 @@ Private Sub ButtonSave_Click()
       Dim Picture As Photograph
         
       If TextActiveStatus.Text = "Selecionar" Then
-            MsgBox "Define o estado de atividade do cliente!", vbExclamation, "Obrigatório"
+            MsgBox "Defina o estado de atividade do cliente!", vbExclamation, "Obrigatório"
             TextActiveStatus.SetFocus
          Exit Sub
       End If
