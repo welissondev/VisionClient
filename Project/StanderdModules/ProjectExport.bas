@@ -17,9 +17,9 @@ Public Sub OverwriteExportedFile()
    
    Set Work = ThisWorkbook
    
-   WindowsFormsPaste = Work.Path & "\Project\WindowsForms\"
-   StanderdModulePaste = Work.Path & "\Project\StanderdModules\"
-   ClassModulePaste = Work.Path & "\Project\ClassModules\"
+   WindowsFormsPaste = Work.path & "\Project\WindowsForms\"
+   StanderdModulePaste = Work.path & "\Project\StanderdModules\"
+   ClassModulePaste = Work.path & "\Project\ClassModules\"
      
    Call DeleteFile(WindowsFormsPaste)
    Call DeleteFile(StanderdModulePaste)
@@ -38,9 +38,9 @@ Public Sub ExportComponents()
    
    Set Work = ThisWorkbook
    
-   WindowsFormsPaste = Work.Path & "\Project\WindowsForms\"
-   StanderdModulePaste = Work.Path & "\Project\StanderdModules\"
-   ClassModulePaste = Work.Path & "\Project\ClassModules\"
+   WindowsFormsPaste = Work.path & "\Project\WindowsForms\"
+   StanderdModulePaste = Work.path & "\Project\StanderdModules\"
+   ClassModulePaste = Work.path & "\Project\ClassModules\"
            
    For ComponentIndex = 1 To Work.VBProject.VBComponents.Count
       
@@ -83,8 +83,8 @@ Public Sub ExportWorkSheet()
    Set Work = ThisWorkbook
    Set Sheet = New FileSystemObject
    
-   SourceDirectory = Work.Path + "\" + Work.Name
-   DestinationDirectory = Work.Path + "\Project\" + Work.Name
+   SourceDirectory = Work.path + "\" + Work.Name
+   DestinationDirectory = Work.path + "\Project\" + Work.Name
    Override = True
    
    Call Sheet.CopyFile(SourceDirectory, DestinationDirectory, Override)
@@ -98,21 +98,21 @@ Public Sub ExportWorkSheet()
    
 End Sub
 
-Private Sub DeleteFile(Path As String)
+Private Sub DeleteFile(path As String)
 
     Dim FileList() As String
     Dim Index As Long
     
     Set Work = ThisWorkbook
     
-    FileList = ListFiles(Path)
+    FileList = ListFiles(path)
     
     For Index = 0 To UBound(FileList)
        
        DoEvents
        
        If FileList(Index) <> Empty Then
-             Call Kill(Path & FileList(Index))
+             Call Kill(path & FileList(Index))
        End If
        
     Next
@@ -120,7 +120,7 @@ Private Sub DeleteFile(Path As String)
 End Sub
 
 
-Private Function ListFiles(ByVal Path As String) As String()
+Private Function ListFiles(ByVal path As String) As String()
        
        On Error GoTo Excption
        
@@ -132,9 +132,9 @@ Private Function ListFiles(ByVal Path As String) As String()
        
           ReDim ArrayList(0) As String
           
-          If FileSystem.FolderExists(Path) Then
+          If FileSystem.FolderExists(path) Then
               
-              Set RootPaste = FileSystem.GetFolder(Path)
+              Set RootPaste = FileSystem.GetFolder(path)
        
               For Each FileStream In RootPaste.Files
                   FileIndex = IIf(ArrayList(0) = "", 0, FileIndex + 1)

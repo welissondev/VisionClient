@@ -42,21 +42,21 @@ Private Sub ButtonSelectPhoto_Click()
       Dim Image As MSForms.Image
       Dim Picture As Photograph
       Dim Number As CodeGenerator
-      Dim Path As String
+      Dim path As String
       Dim Directory As Boolean
 
       Set Image = ImageClient
       Set Picture = New Photograph
       Set Number = New CodeGenerator
 
-      Path = Picture.GetFilePath()
-      Directory = Picture.VerifyDirectoryFile(Path)
+      path = Picture.GetFilePath()
+      Directory = Picture.VerifyDirectoryFile(path)
 
       Select Case Directory
          Case Is = True
 
             If Picture.VerifyDirectoryFile(CurrentPhoto) = False Then
-               PhotoNumber = Number.Generate(25, True)
+               PhotoNumber = "PF-" & Number.Generate(25, True)
             End If
 
             FileString = Picture.FileString

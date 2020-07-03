@@ -20,12 +20,12 @@ AllowMultiSelect As Boolean = False) As String
     
 End Function
 
-Public Function CreateFolder(ByVal Path As String) As Folder
+Public Function CreateFolder(ByVal path As String) As Folder
    
    With New FileSystemObject
    
-      If .FolderExists(Path) = False Then
-         Set CreateFolder = .CreateFolder(Path)
+      If .FolderExists(path) = False Then
+         Set CreateFolder = .CreateFolder(path)
       End If
       
    End With
