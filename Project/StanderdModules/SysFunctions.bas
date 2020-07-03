@@ -20,12 +20,12 @@ AllowMultiSelect As Boolean = False) As String
     
 End Function
 
-Public Function CreateFolder(ByVal path As String) As Folder
+Public Function CreateFolder(ByVal Path As String) As Folder
    
    With New FileSystemObject
    
-      If .FolderExists(path) = False Then
-         Set CreateFolder = .CreateFolder(path)
+      If .FolderExists(Path) = False Then
+         Set CreateFolder = .CreateFolder(Path)
       End If
       
    End With
@@ -59,13 +59,30 @@ Public Function CheckFolderExists(FileSpec As String, Optional ByVal Create As B
      
 End Function
 
-Public Function CheckFileExists(ByVal FileSpec As String) As Boolean
+Public Function CheckTextFileExists(ByVal FileSpec As String, Optional ByVal Create As Boolean = False) As Boolean
+    
+    Dim ExistsFile As Boolean
     
     With New FileSystemObject
         
-        CheckFileExists = .FileExists(FileSpec)
+      Select Case .FileExists(FileSpec)
+      
+         Case Is = True
+            
+            ExistsFile = True
+            
+         Case Is = False
+         
+            If Create = True Then
+                Call .CreateTextFile(FileSpec)
+                ExistsFile = True
+            End If
+            
+      End Select
         
     End With
+    
+    CheckTextFileExists = ExistsFile
     
 End Function
 

@@ -42,15 +42,15 @@ Private Sub ButtonSelectPhoto_Click()
       Dim Image As MSForms.Image
       Dim Picture As Photograph
       Dim Number As CodeGenerator
-      Dim path As String
+      Dim Path As String
       Dim Directory As Boolean
 
       Set Image = ImageClient
       Set Picture = New Photograph
       Set Number = New CodeGenerator
 
-      path = Picture.GetFilePath()
-      Directory = Picture.VerifyDirectoryFile(path)
+      Path = Picture.GetFilePath()
+      Directory = Picture.VerifyDirectoryFile(Path)
 
       Select Case Directory
          Case Is = True

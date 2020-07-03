@@ -39,9 +39,9 @@ ErrorHamdle:
     
 End Function
 
-Public Sub CreateZipEmpty(path As Variant)
-    If Len(Dir(path)) > 0 Then Kill path
-      Open path For Output As #1
+Public Sub CreateZipEmpty(Path As Variant)
+    If Len(Dir(Path)) > 0 Then Kill Path
+      Open Path For Output As #1
       Print #1, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String(18, 0)
     Close #1
 End Sub

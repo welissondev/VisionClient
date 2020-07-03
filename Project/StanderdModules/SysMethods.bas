@@ -37,32 +37,23 @@ Public Sub ActiveWorkbookRefreshAll()
 End Sub
 
 Public Sub SubmitException()
-
-    Dim FileName As String
-    Dim TextFile As Object
-    Dim CurrenLine As String
     
-    With New FileSystemObject
+    Dim DataError As String
     
-        FileName = SysDirectorys.PathAppLog & "\Error.txt"
-            
-        Set TextFile = .OpenTextFile(FileName, 1, True)
-              While Not TextFile.AtEndOfStream
-                  DoEvents
-                  CurrenLine = CurrenLine & TextFile.ReadLine & vbCrLf
-              Wend
-          TextFile.Close
-        
-        Set TextFile = .OpenTextFile(FileName, 2, True)
-          With TextFile
-              .WriteLine "Error:" & Err.Number & Space(1) & "Description:" & Err.Description & vbCrLf & vbCrLf & CurrenLine
-              .Close
-          End With
-              
-    End With
+    DataError = "Error:" & Err.Number & Space(1) & "Description:" & Err.Description & vbCrLf
+      
+    Call SaveLog(SysDirectorys.PathAppLog & "\Error.log", DataError)
      
     FormExceptionErrorNotifier.Show
     
+End Sub
+
+Public Sub SaveLog(Path As String, DataLog As String)
+  On Error Resume Next
+    Close #1
+      Open Path For Append As #1
+      Print #1, DataLog
+    Close #1
 End Sub
 
 Public Sub DefineUserFormStyle(Form As MSForms.UserForm, Optional ByVal MainColor As Variant = 13408512)
