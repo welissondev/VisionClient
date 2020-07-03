@@ -92,11 +92,11 @@ End Sub
 
 Public Sub ClearParameter()
    
-   Dim I As Integer
+   Dim i As Integer
    
    If This.Command.Parameters.Count > 0 Then
-      For I = 0 To This.Command.Parameters.Count - 1
-         Call This.Command.Parameters.Delete(I)
+      For i = 0 To This.Command.Parameters.Count - 1
+         Call This.Command.Parameters.Delete(i)
       Next
    End If
    

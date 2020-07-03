@@ -1,3 +1,5 @@
+Error:0 Description:
+
 Error:-2147467259 Description:As alterações solicitadas para a tabela não foram bem-sucedidas, já que criariam valores duplicados de índice, chave primária ou relação. Altere os dados no campo ou nos campos que contêm dados duplicados, remova o índice, ou redefina-o para permitir entradas duplicadas, e tente novamente.
 
 Error:-2147467259 Description:As alterações solicitadas para a tabela não foram bem-sucedidas, já que criariam valores duplicados de índice, chave primária ou relação. Altere os dados no campo ou nos campos que contêm dados duplicados, remova o índice, ou redefina-o para permitir entradas duplicadas, e tente novamente.
@@ -25,6 +27,7 @@ Error:-2147467259 Description:A tabela 'ClientLegalPerson' foi aberta em modo ex
 Error:1004 Description:Esta fórmula não contém uma referência de intervalo ou um nome definido. 
 
 Error:424 Description:O objeto é obrigatório
+
 
 
 
