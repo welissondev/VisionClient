@@ -1,23 +1,21 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormAddClientNaturalPerson 
-   Caption         =   "Diário Excel - Sistema Para Cadastro De Clientes"
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormAddClientLegalPerson 
+   Caption         =   "Formulário Para Cadastro De Clientes Tipo Jurídica"
    ClientHeight    =   10170
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   14895
-   OleObjectBlob   =   "FormAddClientNaturalPerson.frx":0000
+   ClientWidth     =   16065
+   OleObjectBlob   =   "FormAddClientLegalPerson.frx":0000
    StartUpPosition =   1  'CenterOwner
-   WhatsThisButton =   -1  'True
-   WhatsThisHelp   =   -1  'True
 End
-Attribute VB_Name = "FormAddClientNaturalPerson"
+Attribute VB_Name = "FormAddClientLegalPerson"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Implements Client: Implements Person: Implements Contact: Implements Address
+Implements Client: Implements Company: Implements Contact: Implements Address
 
 Private Id As Long
 Private FileString As String
@@ -89,7 +87,7 @@ Private Sub ButtonSave_Click()
 
    On Error GoTo Exception
         
-      Dim Client As ClientNaturalPerson
+      Dim Client As ClientLegalPerson
       Dim Picture As Photograph
         
       If TextActiveStatus.Text = "Selecionar" Then
@@ -110,7 +108,7 @@ Private Sub ButtonSave_Click()
          Exit Sub
       End If
 
-      Set Client = New ClientNaturalPerson
+      Set Client = New ClientLegalPerson
       Set Picture = New Photograph
       
       Call Client.Builder(Me)
@@ -194,10 +192,10 @@ Private Sub ButtonDelete_Click()
          Exit Sub
       End If
 
-      Dim Client As ClientNaturalPerson
+      Dim Client As ClientLegalPerson
       Dim Picture As Photograph
 
-      Set Client = New ClientNaturalPerson
+      Set Client = New ClientLegalPerson
       Set Picture = New Photograph
 
       If Client.Delete(Id) = True Then
@@ -282,8 +280,8 @@ Private Sub FillTextBox()
 
    On Error GoTo Exception
       Call SysCollections.SetYesNo(TextActiveStatus)
-      Call SysCollections.SetSexes(TextSex)
-      Call SysCollections.SetCivilStatus(TextCivilStatus)
+      Call SysCollections.SetCompanyTypes(TextYourType)
+      Call SysCollections.SetCompanyTypeActions(TextTypeAction)
       Call SysCollections.SetStatesLocation(TextState)
    Exit Sub
 
@@ -312,8 +310,8 @@ Private Sub FormatMask()
                 Set Mask(Index).ToMobilePhone = Controls(Index)
             Case Is = "FixedPhone"
                 Set Mask(Index).ToFixedPhone = Controls(Index)
-            Case Is = "SocialSecurity"
-                Set Mask(Index).ToSocialSecurity = Controls(Index)
+            Case Is = "NationalLegalRegistry"
+                Set Mask(Index).ToNationalRegistry = Controls(Index)
             Case Is = "InternalCode"
                 Set Mask(Index).CanNotString = Controls(Index)
             Case Is = "ZipCode"
@@ -342,7 +340,7 @@ Public Sub ViewData(Id As Long)
            Exit Sub
         End If
   
-        With New ClientNaturalPerson
+        With New ClientLegalPerson
            Call .Builder(Me): Call .ViewData(Id)
         End With
                
@@ -417,69 +415,74 @@ Private Property Let Client_Observation(Value As String)
 End Property
 
 
-
-'Entidade pessoa
-Private Property Get Person_Age() As Integer
-    If TextAge.Text <> Empty Then
-        Person_Age = TextAge.Text
+'Entidade empresa
+Private Property Get Company_DateDispatch() As Date
+    If TextDateDispatch.Text <> Empty Then
+        Company_DateDispatch = TextDateDispatch.Text
     End If
 End Property
-Private Property Let Person_Age(Value As Integer)
-    If Value > 0 Then
-        TextAge.Text = Value
-    End If
-End Property
-Private Property Get Person_BirthDay() As Date
-    If TextBirthDay.Text <> Empty Then
-      Person_BirthDay = TextBirthDay.Text
-    End If
-End Property
-Private Property Let Person_BirthDay(Value As Date)
+Private Property Let Company_DateDispatch(Value As Date)
     If Value <> "00:00:00" Then
-        TextBirthDay = Value
+        TextDateDispatch.Text = Value
     End If
 End Property
-Private Property Get Person_CivilStatus() As String
-    If TextCivilStatus.Text <> "Selecionar" Then
-        Person_CivilStatus = TextCivilStatus.Text
-    End If
+Private Property Get Company_FantasyName() As String
+    Company_FantasyName = TextFantasyName.Text
 End Property
-Private Property Let Person_CivilStatus(Value As String)
-    If Value <> Empty Then
-        TextCivilStatus.Text = Value
-    Else
-        TextCivilStatus.Text = "Selecionar"
-    End If
+Private Property Let Company_FantasyName(Value As String)
+    TextFantasyName.Text = Value
 End Property
-Private Property Get Person_IndentyCard() As String
-    Person_IndentyCard = TextIndentyCard.Text
+Private Property Get Company_Name() As String
+    Company_Name = TextYourName.Text
 End Property
-Private Property Let Person_IndentyCard(Value As String)
-    TextIndentyCard.Text = Value
-End Property
-Private Property Get Person_Name() As String
-    Person_Name = TextYourName.Text
-End Property
-Private Property Let Person_Name(Value As String)
+Private Property Let Company_Name(Value As String)
     TextYourName.Text = Value
 End Property
-Private Property Get Person_Sex() As String
-    If TextSex.Text <> "Selecionar" Then
-        Person_Sex = TextSex.Text
+Private Property Get Company_NationalLegalRegistry() As String
+    Company_NationalLegalRegistry = TextNationalLegalRegistry.Text
+End Property
+Private Property Let Company_NationalLegalRegistry(Value As String)
+    TextNationalLegalRegistry.Text = Value
+End Property
+Private Property Get Company_StateRegistration() As String
+    Company_StateRegistration = TextStateRegistration.Text
+End Property
+Private Property Let Company_StateRegistration(Value As String)
+    TextStateRegistration.Text = Value
+End Property
+Private Property Get Company_TimeDispatch() As Integer
+    If TextTimeDispatch.Text <> Empty Then
+        Company_TimeDispatch = TextTimeDispatch.Text
     End If
 End Property
-Private Property Let Person_Sex(Value As String)
+Private Property Let Company_TimeDispatch(Value As Integer)
+    If Value > 0 Then
+        TextTimeDispatch.Text = Value
+    End If
+End Property
+Private Property Get Company_TypeAction() As String
+    If TextTypeAction.Text <> "Selecionar" Then
+        Company_TypeAction = TextTypeAction.Text
+    End If
+End Property
+Private Property Let Company_TypeAction(Value As String)
     If Value <> Empty Then
-        TextSex.Text = Value
+        TextTypeAction.Text = Value
     Else
-        TextSex.Text = "Selecionar"
+        TextTypeAction.Text = "Selecionar"
     End If
 End Property
-Private Property Get Person_SocialSecurity() As String
-    Person_SocialSecurity = TextSocialSecurity.Text
+Private Property Get Company_YourType() As String
+    If TextYourType.Text <> "Selecionar" Then
+        Company_YourType = TextYourType.Text
+    End If
 End Property
-Private Property Let Person_SocialSecurity(Value As String)
-    TextSocialSecurity.Text = Value
+Private Property Let Company_YourType(Value As String)
+    If Value <> Empty Then
+        TextYourType.Text = Value
+    Else
+        TextYourType.Text = "Selecionar"
+    End If
 End Property
 
 
@@ -559,5 +562,3 @@ End Property
 Private Property Let Address_ZipCode(Value As String)
     TextZipCode.Text = Value
 End Property
-
-
