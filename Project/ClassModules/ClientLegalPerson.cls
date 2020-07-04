@@ -251,8 +251,7 @@ Public Function ListData() As ADODB.Recordset
     
     With Query
        .Append "SELECT id, internalCode, yourName, stateRegistration, nationalLegalRegistry,"
-       .Append "email, yourType, typeAction, activeStatus FROM "
-       .Append "ClientLegalPerson WHERE Id > 0 "
+       .Append "email, yourType, typeAction, activeStatus FROM ClientLegalPerson"
     End With
               
     Set ListData = Base.ExecuteWithQuery(Query.ToString())
