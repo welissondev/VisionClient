@@ -54,7 +54,7 @@ Private Sub ButtonSelectPhoto_Click()
          Case Is = True
 
             If Picture.VerifyDirectoryFile(CurrentPhoto) = False Then
-               PhotoNumber = Number.Generate(25, True)
+               PhotoNumber = "PJ-" & Number.Generate(25, True)
             End If
 
             FileString = Picture.FileString

@@ -247,8 +247,7 @@ Public Function ListData() As ADODB.Recordset
     
     With Query
        .Append "SELECT id, internalCode, yourName, socialSecurity, indentyCard,"
-       .Append "email, sex, civilStatus, activeStatus FROM "
-       .Append "ClientNaturalPerson WHERE Id > 0 "
+       .Append "email, sex, civilStatus, activeStatus FROM ClientNaturalPerson"
     End With
               
     Set ListData = Base.ExecuteWithQuery(Query.ToString())

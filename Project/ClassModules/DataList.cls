@@ -32,11 +32,11 @@ End Function
 
 Public Function GetValues() As String
    
-   Dim I As Integer
+   Dim i As Integer
    Dim Str As String
    
-   For I = 1 To DataList.Count
-      Str = Str & DataList.Item(I)
+   For i = 1 To DataList.Count
+      Str = Str & DataList.Item(i)
       If DataList.Count > 0 Then
          Str = Str & vbCrLf
       End If

@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormAddClientNaturalPerson 
-   Caption         =   "Diário Excel - Sistema Para Cadastro De Clientes"
+   Caption         =   "Formulário Para Cadastro De Clientes Tipo Física"
    ClientHeight    =   10170
    ClientLeft      =   120
    ClientTop       =   465
@@ -56,7 +56,7 @@ Private Sub ButtonSelectPhoto_Click()
          Case Is = True
 
             If Picture.VerifyDirectoryFile(CurrentPhoto) = False Then
-               PhotoNumber = Number.Generate(25, True)
+               PhotoNumber = "PF-" & Number.Generate(25, True)
             End If
 
             FileString = Picture.FileString
