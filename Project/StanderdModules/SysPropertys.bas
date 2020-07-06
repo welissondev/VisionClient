@@ -7,7 +7,7 @@ Public Property Get ConnectionString() As String
 End Property
 
 Public Property Get AppVersion() As String
-   AppVersion = "1.3.28.36"
+   AppVersion = "1.3.30.1467"
 End Property
 Public Property Get AppName() As String
    AppName = "VisionClient"
