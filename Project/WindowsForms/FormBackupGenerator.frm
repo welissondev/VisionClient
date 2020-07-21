@@ -21,7 +21,7 @@ Private Sub UserForm_Initialize()
     
     On Error GoTo Exception
       
-        Call SysMethods.DefineUserFormStyle(Me)
+        Call SysMethods.DefineUserFormStyle(Me, 11892015)
         
         SelectedFolderPath = GetSelectedPath()
         TextSelectedFolderPath = SelectedFolderPath

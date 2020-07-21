@@ -3,11 +3,11 @@ Option Explicit
 
 Public Property Get ConnectionString() As String
    ConnectionString = "Provider = " & SheetAppUserDefination.BoxProviderSelected.Value & _
-   "; Data Source = " & SysDirectorys.PathSheet & "\App\Data\VisionBase.mdb"
+   "; Data Source = " & SysDirectorys.PathAppData & "\DBA.mdb"
 End Property
 
 Public Property Get AppVersion() As String
-   AppVersion = "1.3.30.1468"
+   AppVersion = "1.3.23.200721.0914"
 End Property
 Public Property Get AppName() As String
    AppName = "VisionClient"

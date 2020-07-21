@@ -3,35 +3,31 @@ Option Explicit
 
 Public Sub SetYesNo(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Selecionar")
       .AddItem ("Sim")
       .AddItem ("Não")
-      .Text = "Selecionar"
+      .Text = .List(0)
    End With
 End Sub
 
 Public Sub SetSexes(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Selecionar")
       .AddItem ("Masculino")
       .AddItem ("Feminino")
-      .Text = "Selecionar"
+      .Text = .List(0)
    End With
 End Sub
 
 Public Sub SetCivilStatus(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Selecionar")
       .AddItem ("Casado(a)")
       .AddItem ("Solteiro(a)")
       .AddItem ("Divorciado(a)")
-      .Text = "Selecionar"
+      .Text = .List(0)
    End With
 End Sub
 
 Public Sub SetStatesLocation(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Selecionar")
       .AddItem ("Acre")
       .AddItem ("Alagoas")
       .AddItem ("Amapá")
@@ -59,37 +55,34 @@ Public Sub SetStatesLocation(ByVal ComboBox As MSForms.ComboBox)
       .AddItem ("São Paulo")
       .AddItem ("Sergipe")
       .AddItem ("Tocantins")
-      .Text = "Selecionar"
+      .Text = .List(0)
    End With
 End Sub
 
 Public Sub SetClientTypes(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
-       .AddItem ("Selecionar")
        .AddItem ("Física")
        .AddItem ("Jurídica")
-       .Text = "Selecionar"
+       .Text = .List(0)
    End With
 End Sub
 
 Public Sub SetCompanyTypes(ComboBox As MSForms.ComboBox)
    With ComboBox
-       .AddItem ("Selecionar")
        .AddItem ("Matriz")
        .AddItem ("Filial")
-       .AddItem ("Único")
+       .Text = .List(0)
    End With
 End Sub
 
 Public Sub SetCompanyTypeActions(ByVal ComboBox As MSForms.ComboBox)
    With ComboBox
-      .AddItem ("Selecionar")
       .AddItem ("Empresário Individual")
       .AddItem ("Microempreendedor - MEI")
       .AddItem ("Empresa Individual - EIRELI")
       .AddItem ("Sociedade Empresária")
       .AddItem ("Sociedade Simples")
-      .Text = "Selecionar"
+      .Text = .List(0)
    End With
 End Sub
 

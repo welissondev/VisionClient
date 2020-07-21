@@ -25,4 +25,7 @@ Public Property Get PathAppDef() As String
    PathAppDef = ThisWorkbook.Path & "\App\Def"
 End Property
 
+Public Property Get PathAppData() As String
+   PathAppData = ThisWorkbook.Path & "\App\Data"
+End Property
 

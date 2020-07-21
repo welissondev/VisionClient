@@ -12,20 +12,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Option Explicit
 
 Private Sub UserForm_Initialize()
-  SetError
-End Sub
-
-Private Sub SetError()
-   
-   Dim ErrorStrBilder As StringBuilder
-   Dim Sheet As Worksheet
-   Dim Row As Long
-   
-   Set ErrorStrBilder = New StringBuilder
-      With ErrorStrBilder
+                   
+      With New StringBuilder
          
          .Append "Ocorreu uma falha durante o processamento dessa operação, "
          .Append "e por esse motivo foi gerada uma exceção."
@@ -52,12 +42,16 @@ Private Sub SetError()
          .Append vbCr
          .Append "Acesse: diarioexcel.com.br e solicite nosso suporte!"
          
+          Me.TextErrorDescription.Text = .ToString()
+          
       End With
       
-      ErrorCaption = "Erro Em Tempo De Execução :("
-      ErrorDescription = ErrorStrBilder.ToString
       
-      Err.Clear
-      
-End Sub
+     '\\Salva o log do erro
+      Dim ErrLog As String
+      ErrLog = "Erro:" & Err.Number & Space(1) & "Description:" & Err.Description & _
+      Space(1) & "Data:" & Now & vbCrLf
 
+      Call SaveLog(SysDirectorys.PathAppLog & "\Error.log", ErrLog)
+    
+End Sub
