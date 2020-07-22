@@ -37,15 +37,7 @@ Public Sub ActiveWorkbookRefreshAll()
 End Sub
 
 Public Sub SubmitException()
-    
-    Dim DataError As String
-    
-    DataError = "Error:" & Err.Number & Space(1) & "Description:" & Err.Description & vbCrLf
-      
-    Call SaveLog(SysDirectorys.PathAppLog & "\Error.log", DataError)
-     
     FormExceptionErrorNotifier.Show
-    
 End Sub
 
 Public Sub SaveLog(Path As String, DataLog As String)
@@ -56,30 +48,30 @@ Public Sub SaveLog(Path As String, DataLog As String)
     Close #1
 End Sub
 
-Public Sub DefineUserFormStyle(Form As MSForms.UserForm, Optional ByVal MainColor As Variant = 13408512)
+Public Sub DefineUserFormStyle(Form As MSForms.UserForm, Optional ByVal MainColor As Variant = 6697728)
 
    On Error GoTo Exception
    
       Dim Control As MSForms.Control
    
       Dim TextBorderColor, TextBackColor, TextForeColor, TextBorderStyle, TextFont As Variant
-         TextFont = "Arial"
-         TextBackColor = &H80000004
-         TextBorderColor = &H80000016
-         TextForeColor = 1842204
+         TextFont = "Trebuchet MS"
+         TextBackColor = &HFFFFFF
+         TextBorderColor = &H80000003
+         TextForeColor = &H80000006
          TextBorderStyle = 1
       
       Dim LabelForeColor, LabelFont As Variant
-         LabelForeColor = MainColor
-         LabelFont = "Calibri"
+         LabelForeColor = &H80000006
+         LabelFont = "Trebuchet MS"
          
       Dim FrameBackColor, FrameForeColor, FrameBorderColor, FrameFont As Variant
          FrameBorderColor = 14540253
          FrameForeColor = &H996600
          FrameBackColor = &HFFFFFF
-         FrameFont = "Calibri"
+         FrameFont = "Trebuchet MS"
       
-      Form.Font = "Calibri"
+      Form.Font = "Trebuchet MS"
       Form.BackColor = MainColor
       
       For Each Control In Form.Controls
@@ -114,7 +106,8 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm, Optional ByVal MainColo
                       .ForeColor = LabelForeColor
                       With .Font
                          .Name = LabelFont
-                         .Size = 11
+                         .Size = 10
+                         .Bold = True
                       End With
                   End If
                End With
@@ -126,7 +119,7 @@ Public Sub DefineUserFormStyle(Form As MSForms.UserForm, Optional ByVal MainColo
                   .ForeColor = FrameForeColor
                   With .Font
                      .Name = FrameFont
-                     .Size = 10
+                     .Size = 9
                   End With
                End With
                

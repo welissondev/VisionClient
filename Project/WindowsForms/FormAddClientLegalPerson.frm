@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormAddClientLegalPerson
    ClientHeight    =   10170
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   16065
+   ClientWidth     =   15975
    OleObjectBlob   =   "FormAddClientLegalPerson.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -15,20 +15,17 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Implements Client: Implements Company: Implements Contact: Implements Address
-
 Private Id As Long
 Private FileString As String
 Private PhotoNumber As String
 Private RegistrationDate As Date
 Private Mask() As New FormatterMask
 
-
 Private Sub UserForm_Initialize()
 
    Call FormatMask
    Call FillTextBox
-   Call SysMethods.DefineUserFormStyle(Me, &H404040)
+   Call SysMethods.DefineUserFormStyle(Me, 11892015)
    Call LoadImageNothing(ImageClient)
 
 End Sub
@@ -54,7 +51,7 @@ Private Sub ButtonSelectPhoto_Click()
          Case Is = True
 
             If Picture.VerifyDirectoryFile(CurrentPhoto) = False Then
-               PhotoNumber = "PJ-" & Number.Generate(25, True)
+               PhotoNumber = "PF-" & Number.Generate(25, True)
             End If
 
             FileString = Picture.FileString
@@ -87,50 +84,75 @@ Private Sub ButtonSave_Click()
 
    On Error GoTo Exception
         
-      Dim Client As ClientLegalPerson
-      Dim Picture As Photograph
-        
       If TextActiveStatus.Text = "Selecionar" Then
             MsgBox "Defina o estado de atividade do cliente!", vbExclamation, "Obrigatório"
             TextActiveStatus.SetFocus
-         Exit Sub
+          Exit Sub
       End If
         
-      If Len(TextInternalCode.Value) < 8 Then
-            MsgBox "O código do cliente, deve ter no minimo 8 digitos!", vbExclamation, "Obrigatório"
+      If TextInternalCode.Text = Empty Then
+           MsgBox "Campo código é obrigatório!", vbExclamation, "OBRIGATÓRIO"
+           TextInternalCode.SetFocus
+          Exit Sub
+      End If
+        
+      If Len(TextInternalCode.Value) > 8 Then
+            MsgBox "O código do cliente, deve ter no máximo 8 digitos!", vbExclamation, "Obrigatório"
             TextInternalCode.SetFocus
-         Exit Sub
+          Exit Sub
       End If
 
-      If TextYourName.Value = Empty Then
+      If TextYourName.Text = Empty Then
             MsgBox "O nome do cliente não foi informado!", vbExclamation, "Obrigatório"
             TextYourName.SetFocus
-         Exit Sub
+          Exit Sub
       End If
-
-      Set Client = New ClientLegalPerson
-      Set Picture = New Photograph
       
-      Call Client.Builder(Me)
-            
+      If TextTimeDispatch.Text = Empty Or TextTimeDispatch.Value = 0 Then
+            MsgBox "O campo Tempo de expedição é obrigatório!", vbExclamation, "Obrigatório"
+            TextTimeDispatch.SetFocus
+          Exit Sub
+      End If
+      
+      If IsDate(TextDateDispatch.Value) = False Then
+            MsgBox "A data de expedição não é válida!", vbExclamation, "INVÁLIDA"
+            TextDateDispatch.SetFocus
+          Exit Sub
+      End If
+      
       Select Case Id
+      
          Case Is = 0
-            If Client.Insert = True Then
-               Call Picture.CopyFile(FileString, CurrentPhoto)
+         
+            If Insert() = True Then
+                
+                With New Photograph
+                    Call .CopyFile(FileString, CurrentPhoto)
+                End With
+                
                Call ButtonClear_Click
-               Call MsgBox("Registrado com sucesso!", vbInformation, "SUCESSO")
+               
+               MsgBox "Registrado com sucesso!", _
+               vbInformation, "SUCESSO"
+            
             End If
+            
          Case Is > 0
-            If Client.Update() = True Then
-               Call Picture.CopyFile(FileString, CurrentPhoto)
-               Call MsgBox("Editado com sucesso!", vbInformation, "SUCESSO")
+         
+            If Update(Id) = True Then
+                
+              With New Photograph
+                  Call .CopyFile(FileString, CurrentPhoto)
+              End With
+            
+              MsgBox "Editado com sucesso!", _
+              vbInformation, "SUCESSO"
+            
             End If
+            
       End Select
 
-      Set Client = Nothing
-      Set Picture = Nothing
-
-      Exit Sub
+  Exit Sub
 
 Exception:
 
@@ -152,7 +174,7 @@ Private Sub ButtonClear_Click()
                Control.Value = Empty
 
             Case Is = "ComboBox"
-               Control.Value = "Selecionar"
+               Control.Text = Control.List(0)
 
             Case Is = "CheckBox"
                Control.Value = False
@@ -187,28 +209,18 @@ Private Sub ButtonDelete_Click()
 
    On Error GoTo Exception
 
-      If Id = 0 Then
-            MsgBox "Selecione o registro para deletar!", vbExclamation, "Selecione"
-         Exit Sub
-      End If
-
-      Dim Client As ClientLegalPerson
-      Dim Picture As Photograph
-
-      Set Client = New ClientLegalPerson
-      Set Picture = New Photograph
-
-      If Client.Delete(Id) = True Then
-
-         Call Picture.DeleteFile(CurrentPhoto)
-         Call ButtonClear_Click
-
-         MsgBox "Deletado com sucesso!", vbInformation, "Sucesso"
-
-      End If
-
-      Set Client = Nothing
-      Set Picture = Nothing
+        If Delete(Id) = True Then
+            
+            With New Photograph
+                Call .DeleteFile(CurrentPhoto)
+            End With
+  
+           Call ButtonClear_Click
+  
+           MsgBox "Deletado com sucesso!", _
+           vbInformation, "Sucesso"
+            
+        End If
 
    Exit Sub
 
@@ -235,7 +247,7 @@ Private Sub CheckGenerateCode_Click()
       Select Case Control.Value
          Case Is = True
             With TextInternalCode
-               .Text = Code.Generate(8)
+               .Text = Code.Generate(4, True)
                .Locked = True
                .SetFocus
             End With
@@ -310,10 +322,8 @@ Private Sub FormatMask()
                 Set Mask(Index).ToMobilePhone = Controls(Index)
             Case Is = "FixedPhone"
                 Set Mask(Index).ToFixedPhone = Controls(Index)
-            Case Is = "NationalLegalRegistry"
+            Case Is = "NationalRegistry"
                 Set Mask(Index).ToNationalRegistry = Controls(Index)
-            Case Is = "InternalCode"
-                Set Mask(Index).CanNotString = Controls(Index)
             Case Is = "ZipCode"
                 Set Mask(Index).ToZipCode = Controls(Index)
             Case Is = "Number"
@@ -330,22 +340,373 @@ Exception:
 End Sub
 
 
+Private Function ValidateToInsert() As Boolean
+    
+    Dim Query As StringBuilder
+    Set Query = New StringBuilder
+    
+    With New ConnectionAccess
+    
+        '\\Valida se existe cliente cadastrado com o código
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE internalCode = @internalCode"
+        .AddParameter "@internalCode", TextInternalCode.Text, adVarChar
+        
+        If .ExecuteWithQuery(Query.ToString()).RecordCount > 0 Then
+               MsgBox "Um cliente cadastrado com esse código já existe!", _
+               vbExclamation, "JÁ EXISTE"
+               TextInternalCode.SetFocus
+               ValidateToInsert = False
+            Exit Function
+        End If
+        Query.Clear: .ClearParameter
+                     
+        '\\Valida se existe cliente cadastrado com o I.E
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE stateRegistration = @stateRegistration"
+        .AddParameter "@stateRegistration", TextStateRegistration.Text, adVarChar
+        
+        If .ExecuteWithQuery(Query.ToString()).RecordCount > 0 Then
+              MsgBox "Um cliente cadastrado com esse I.E já existe!", _
+              vbExclamation, "JÁ EXISTE"
+              TextStateRegistration.SetFocus
+              ValidateToInsert = False
+            Exit Function
+        End If
+        Query.Clear: .ClearParameter
+             
+             
+        '\\Valida se existe cliente cadastrado com o CNPJ
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE NationalLegalRegistry = @NationalLegalRegistry"
+        .AddParameter "@NationalLegalRegistry", TextNationalLegalRegistry.Text, adVarChar
+        
+        If .ExecuteWithQuery(Query.ToString()).RecordCount > 0 Then
+              MsgBox "Um cliente cadastrado com esse CNPJ já existe!", _
+              vbExclamation, "JÁ EXISTE"
+              TextNationalLegalRegistry.SetFocus
+              ValidateToInsert = False
+            Exit Function
+        End If
+        Query.Clear: .ClearParameter
+        
+        
+        '\\Valida se existe cliente cadastrado com o email
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE email = @email"
+        .AddParameter "@email", TextEmail.Text, adVarChar
+        
+        If .ExecuteWithQuery(Query.ToString()).RecordCount > 0 Then
+              MsgBox "Um cliente cadastrado com esse email já existe!", _
+              vbExclamation, "JÁ EXISTE"
+              TextEmail.SetFocus
+              ValidateToInsert = False
+            Exit Function
+        End If
+        Query.Clear: .ClearParameter
+             
+        ValidateToInsert = True
+        
+    End With
+End Function
 
-Public Sub ViewData(Id As Long)
+Private Function Insert() As Boolean
+
+    If ValidateToInsert() = False Then Exit Function
+
+    Dim Query As StringBuilder
+    Set Query = New StringBuilder
+     
+    With New ConnectionAccess
+    
+        With Query
+          .Append "INSERT INTO ClientLegalPerson(internalCode, photoNumber, activeStatus, registrationDate, observation,"
+          .Append "yourName, fantasyName, timeDispatch, yourType, dateDispatch, typeAction, stateRegistration, nationalLegalRegistry,"
+          .Append "fixedPhone, mobilePhone, whatSapp, email, district, city, state, zipCode, streetNumber, addressDescription, addressComplement)"
+          .Append "VALUES(@internalCode, @photoNumber, @activeStatus, @registrationDate, @observation, @yourName, @fantasyName, @timeDispatch, @yourType,"
+          .Append "@dateDispatch, @typeAction, @stateRegistration, @nationalLegalRegistry, @fixedPhone, @mobilePhone, @whatsApp, @email,"
+          .Append "@district, @city, @state, @zipCode, @streetNumber, @addressDescription, @addressComplement)"
+        End With
+      
+        '\\Cliente
+          .AddParameter "@internalCode", TextInternalCode.Text, adVarChar
+          .AddParameter "@photoNumber", PhotoNumber, adVarChar
+          .AddParameter "@activeStatus", TextActiveStatus.Text, adVarChar
+          .AddParameter "@registrationDate", Date, adDate
+          .AddParameter "@observation", TextObservation.Text, adVarChar
+          .AddParameter "@yourName", TextYourName.Text, adVarChar
+          .AddParameter "@fantasyName", TextFantasyName.Text, adVarChar
+          .AddParameter "@timeDispatch", TextTimeDispatch.Text, adNumeric
+          .AddParameter "@yourType", TextYourType.Text, adVarChar
+          .AddParameter "@dateDispatch", TextDateDispatch.Text, adDate
+          .AddParameter "@typeAction", TextTypeAction.Text, adVarChar
+          .AddParameter "@stateRegistration", TextStateRegistration.Text, adVarChar
+          .AddParameter "@nationalLegalRegistry", TextNationalLegalRegistry.Text, adVarChar
+                                       
+        '\\Contato
+          .AddParameter "@fixedPhone", TextFixedPhone.Text, adVarChar
+          .AddParameter "@mobilePhone", TextMobilePhone.Text, adVarChar
+          .AddParameter "@whatsApp", TextWhatsapp.Text, adVarChar
+          .AddParameter "@email", TextEmail.Text, adVarChar
+                                       
+        '\\Endereço
+          .AddParameter "@district", TextDistrict.Text, adVarChar
+          .AddParameter "@city", TextCity.Text, adVarChar
+          .AddParameter "@state", TextState.Text, adVarChar
+          .AddParameter "@zipCode", TextZipCode.Text, adVarChar
+          .AddParameter "@streetNumber", TextStreetNumber.Text, adVarChar
+          .AddParameter "@addressDescription", TextAddressDescription.Text, adVarChar
+          .AddParameter "@addressComplement", TextAddressComplement.Text, adVarChar
+    
+          Insert = .ExecuteNonQuery(Query.ToString())
+    
+    End With
+   
+    Set Query = Nothing
+
+End Function
+
+
+Private Function ValidateToUpdate() As Boolean
+    
+    Dim Query As StringBuilder
+    Set Query = New StringBuilder
+    
+    With New ConnectionAccess
+    
+        '\\Valida se existe cliente cadastrado com o código
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE internalCode = @internalCode"
+        .AddParameter "@internalCode", TextInternalCode.Text, adVarChar
+        
+        Call .ExecuteWithQuery(Query.ToString())
+        
+        If Not .RecordSet.EOF Then
+            If .RecordSet.Fields("Id").Value > 0 And .RecordSet.Fields("Id").Value <> Id Then
+                   MsgBox "Um cliente cadastrado com esse código já existe!", _
+                   vbExclamation, "JÁ EXISTE"
+                   TextInternalCode.SetFocus
+                   ValidateToUpdate = False
+                Exit Function
+            End If
+        End If
+        Query.Clear: .ClearParameter
+                    
+                    
+        '\\Valida se existe cliente cadastrado com o I.E
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE StateRegistration = @StateRegistration"
+        .AddParameter "@StateRegistration", TextStateRegistration.Text, adVarChar
+        
+        Call .ExecuteWithQuery(Query.ToString())
+        
+        If Not .RecordSet.EOF Then
+            If .RecordSet.Fields("Id").Value > 0 And .RecordSet.Fields("Id") <> Id Then
+                  MsgBox "Um cliente cadastrado com esse I.E já existe!", _
+                  vbExclamation, "JÁ EXISTE"
+                  TextStateRegistration.SetFocus
+                  ValidateToUpdate = False
+                Exit Function
+            End If
+        End If
+        Query.Clear: .ClearParameter
+        
+        
+        '\\Valida se existe cliente cadastrado com o CNPJ
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE nationalLegalRegistry = @nationalLegalRegistry"
+        .AddParameter "@nationalLegalRegistry", TextNationalLegalRegistry.Text, adVarChar
+        
+        Call .ExecuteWithQuery(Query.ToString())
+        
+        If Not .RecordSet.EOF Then
+            If .RecordSet.Fields("Id").Value > 0 And .RecordSet.Fields("Id") <> Id Then
+                  MsgBox "Um cliente cadastrado com esse CNPJ já existe!", _
+                  vbExclamation, "JÁ EXISTE"
+                  TextNationalLegalRegistry.SetFocus
+                  ValidateToUpdate = False
+                Exit Function
+            End If
+        End If
+        Query.Clear: .ClearParameter
+        
+        
+        '\\Valida se existe cliente cadastrado com o email
+        Query.Append "SELECT id FROM ClientLegalPerson "
+        Query.Append "WHERE email = @email"
+        .AddParameter "@email", TextEmail.Text, adVarChar
+        
+        Call .ExecuteWithQuery(Query.ToString())
+        
+        If Not .RecordSet.EOF Then
+            If .RecordSet.Fields("Id").Value > 0 And .RecordSet.Fields("Id") <> Id Then
+                  MsgBox "Um cliente cadastrado com esse email já existe!", _
+                  vbExclamation, "JÁ EXISTE"
+                  TextEmail.SetFocus
+                  ValidateToUpdate = False
+                Exit Function
+            End If
+        End If
+        Query.Clear: .ClearParameter
+             
+        ValidateToUpdate = True
+        
+    End With
+    
+    Set Query = Nothing
+    
+End Function
+Private Function Update(ParameterId As Long) As Boolean
+
+    If ValidateToUpdate() = False Then Exit Function
+
+      Dim Query As StringBuilder
+      Set Query = New StringBuilder
+      
+      With Query
+        .Append "UPDATE ClientLegalPerson Set internalCode = @internalCode, photoNumber = @photoNumber, activeStatus = @activeStatus,"
+        .Append "registrationDate = @registrationDate, observation  = @observation, yourName = @yourName, fantasyName = @fantasyName,"
+        .Append "timeDispatch = @timeDispatch, yourType = @yourType, dateDispatch = @dateDispatch, typeAction = @typeAction,"
+        .Append "stateRegistration = @stateRegistration, nationalLegalRegistry = @nationalLegalRegistry, fixedPhone = @fixedPhone,"
+        .Append "mobilePhone = @mobilePhone, whatsApp = @whatsApp, email = @email, district = @district, city = @city, state = @state,"
+        .Append "zipCode = @zipCode, streetNumber = @streetNumber, addressDescription = @addressDescription,"
+        .Append "addressComplement = @addressComplement WHERE id = @id"
+      End With
+         
+      With New ConnectionAccess
+      
+        '\\Cliente
+          .AddParameter "@internalCode", TextInternalCode.Text, adVarChar
+          .AddParameter "@photoNumber", PhotoNumber, adVarChar
+          .AddParameter "@activeStatus", TextActiveStatus.Text, adVarChar
+          .AddParameter "@registrationDate", Date, adDate
+          .AddParameter "@observation", TextObservation.Text, adVarChar
+          .AddParameter "@yourName", TextYourName.Text, adVarChar
+          .AddParameter "@fantasyName", TextFantasyName.Text, adVarChar
+          .AddParameter "@timeDispatch", TextTimeDispatch.Text, adNumeric
+          .AddParameter "@yourType", TextYourType.Text, adVarChar
+          .AddParameter "@dateDispatch", TextDateDispatch.Text, adVarChar
+          .AddParameter "@typeAction", TextTypeAction.Text, adVarChar
+          .AddParameter "@stateRegistration", TextStateRegistration.Text, adVarChar
+          .AddParameter "@nationalLegalRegistry", TextNationalLegalRegistry.Text, adVarChar
+                                       
+        '\\Contato
+          .AddParameter "@fixedPhone", TextFixedPhone.Text, adVarChar
+          .AddParameter "@mobilePhone", TextMobilePhone.Text, adVarChar
+          .AddParameter "@whatsApp", TextWhatsapp.Text, adVarChar
+          .AddParameter "@email", TextEmail.Text, adVarChar
+                                       
+        '\\Endereço
+          .AddParameter "district", TextDistrict.Text, adVarChar
+          .AddParameter "city", TextCity.Text, adVarChar
+          .AddParameter "state", TextState.Text, adVarChar
+          .AddParameter "zipCode", TextZipCode.Text, adVarChar
+          .AddParameter "streetNumber", TextStreetNumber.Text, adVarChar
+          .AddParameter "addressDescription", TextAddressDescription.Text, adVarChar
+          .AddParameter "addressComplement", TextAddressComplement.Text, adVarChar
+          .AddParameter "@id", ParameterId, adNumeric
+          
+          Update = .ExecuteNonQuery(Query.ToString())
+          
+      End With
+   
+   Set Query = Nothing
+   
+End Function
+
+
+Private Function Delete(ParameterId As Long) As Boolean
+
+    Dim Query As StringBuilder
+    
+    If ParameterId = 0 Then
+          MsgBox "Selecione um registro para excluir!", _
+          vbExclamation, "SELECIONE"
+        Exit Function
+    End If
+    
+    If MsgBox("Confirma a exclusão desse cliente?", _
+    vbExclamation + vbYesNo + vbDefaultButton2, _
+    "IMPORTANTE") = vbNo Then Exit Function
+
+    Set Query = New StringBuilder
+        Query.Append "DELETE FROM ClientLegalPerson WHERE id = @id"
+
+    With New ConnectionAccess
+        .AddParameter "@id", ParameterId, adNumeric
+        Delete = .ExecuteNonQuery(Query.ToString())
+    End With
+     
+    Set Query = Nothing
+   
+End Function
+
+
+Public Sub ViewData(ParameterId As Long)
 
    On Error GoTo Exception
         
-        If Id = 0 Then
-              MsgBox "Selecione um registro para visualizar!", vbExclamation, "Selecione"
+        Dim Query As StringBuilder
+        
+        If ParameterId = 0 Then
+              MsgBox "Selecione um registro para visualizar!", vbExclamation, "SELECIONE"
            Exit Sub
         End If
-  
-        With New ClientLegalPerson
-           Call .Builder(Me): Call .ViewData(Id)
+           
+        Set Query = New StringBuilder
+            Query.Append "SELECT * FROM ClientLegalPerson WHERE Id = @Id"
+            
+        With New ConnectionAccess
+              
+              '\\Adiciona parâmetro e executa query
+              .AddParameter "@Id", ParameterId, adNumeric
+              .ExecuteWithQuery Query.ToString()
+          
+                If .RecordSet.EOF = False Then
+              
+                      '\\Cliente
+                      Id = .Field("id")
+                      TextInternalCode.Text = .Field("internalCode")
+                      PhotoNumber = .Field("photoNumber")
+                      RegistrationDate = .Field("registrationDate")
+                      TextActiveStatus.Text = .Field("ActiveStatus")
+                      TextObservation.Text = .Field("observation")
+                      TextYourName.Text = .Field("yourName")
+                      TextFantasyName.Text = .Field("fantasyName")
+                      TextTimeDispatch.Text = .Field("timeDispatch")
+                      TextYourType.Text = .Field("yourType")
+                      TextDateDispatch.Text = .Field("dateDispatch")
+                      TextTypeAction.Text = .Field("typeAction")
+                      TextStateRegistration.Text = .Field("stateRegistration")
+                      TextNationalLegalRegistry = .Field("nationalLegalRegistry")
+                      
+                      '\\Contato
+                      TextFixedPhone.Text = .Field("fixedPhone")
+                      TextMobilePhone.Text = .Field("mobilePhone")
+                      TextWhatsapp.Text = .Field("whatsApp")
+                      TextEmail = .Field("email")
+                      
+                      '\\Endereço
+                      TextDistrict.Text = .Field("district")
+                      TextCity.Text = .Field("city")
+                      TextState.Text = .Field("state")
+                      TextZipCode.Text = .Field("zipCode")
+                      TextStreetNumber.Text = .Field("streetNumber")
+                      TextAddressDescription.Text = .Field("addressDescription")
+                      TextAddressComplement.Text = .Field("addressComplement")
+                      
+                      With New Photograph
+                         Call .LoadFile(ImageClient, CurrentPhoto)
+                      End With
+                      
+                      Me.Show
+                      
+                End If
+                
         End With
-               
-        Me.Show
-
+        
+        Set Query = Nothing
+                        
       Exit Sub
 
 Exception:
@@ -363,202 +724,3 @@ Private Property Get ImageNothing() As String
 End Property
 
 
-'------------------------------------------------------------------
-'Propriedades implementadas
-'-----------------------------//-----------------------------------
-
-'Entidade cliente
-Private Property Get Client_Id() As Long
-    Client_Id = Id
-End Property
-Private Property Let Client_Id(Value As Long)
-    Id = Value
-End Property
-Private Property Get Client_InternalCode() As String
-    Client_InternalCode = TextInternalCode.Text
-End Property
-Private Property Let Client_InternalCode(Value As String)
-    TextInternalCode.Text = Value
-End Property
-Private Property Get Client_PhotoNumber() As String
-    Client_PhotoNumber = PhotoNumber
-End Property
-Private Property Let Client_PhotoNumber(Value As String)
-    PhotoNumber = Value
-    With New Photograph
-        Call .LoadFile(ImageClient, CurrentPhoto)
-    End With
-End Property
-Private Property Get Client_RegistrationDate() As Date
-    Client_RegistrationDate = RegistrationDate
-End Property
-Private Property Let Client_RegistrationDate(Value As Date)
-    RegistrationDate = Value
-End Property
-Private Property Get Client_ActiveStatus() As String
-    If TextActiveStatus.Text <> "Selecionar" Then
-        Client_ActiveStatus = TextActiveStatus.Text
-    End If
-End Property
-Private Property Let Client_ActiveStatus(Value As String)
-    If Value <> Empty Then
-        TextActiveStatus.Text = Value
-    Else
-        TextActiveStatus.Text = "Selecionar"
-    End If
-End Property
-Private Property Get Client_Observation() As String
-    Client_Observation = TextObservation.Text
-End Property
-Private Property Let Client_Observation(Value As String)
-    TextObservation.Text = Value
-End Property
-
-
-'Entidade empresa
-Private Property Get Company_DateDispatch() As Date
-    If TextDateDispatch.Text <> Empty Then
-        Company_DateDispatch = TextDateDispatch.Text
-    End If
-End Property
-Private Property Let Company_DateDispatch(Value As Date)
-    If Value <> "00:00:00" Then
-        TextDateDispatch.Text = Value
-    End If
-End Property
-Private Property Get Company_FantasyName() As String
-    Company_FantasyName = TextFantasyName.Text
-End Property
-Private Property Let Company_FantasyName(Value As String)
-    TextFantasyName.Text = Value
-End Property
-Private Property Get Company_Name() As String
-    Company_Name = TextYourName.Text
-End Property
-Private Property Let Company_Name(Value As String)
-    TextYourName.Text = Value
-End Property
-Private Property Get Company_NationalLegalRegistry() As String
-    Company_NationalLegalRegistry = TextNationalLegalRegistry.Text
-End Property
-Private Property Let Company_NationalLegalRegistry(Value As String)
-    TextNationalLegalRegistry.Text = Value
-End Property
-Private Property Get Company_StateRegistration() As String
-    Company_StateRegistration = TextStateRegistration.Text
-End Property
-Private Property Let Company_StateRegistration(Value As String)
-    TextStateRegistration.Text = Value
-End Property
-Private Property Get Company_TimeDispatch() As Integer
-    If TextTimeDispatch.Text <> Empty Then
-        Company_TimeDispatch = TextTimeDispatch.Text
-    End If
-End Property
-Private Property Let Company_TimeDispatch(Value As Integer)
-    If Value > 0 Then
-        TextTimeDispatch.Text = Value
-    End If
-End Property
-Private Property Get Company_TypeAction() As String
-    If TextTypeAction.Text <> "Selecionar" Then
-        Company_TypeAction = TextTypeAction.Text
-    End If
-End Property
-Private Property Let Company_TypeAction(Value As String)
-    If Value <> Empty Then
-        TextTypeAction.Text = Value
-    Else
-        TextTypeAction.Text = "Selecionar"
-    End If
-End Property
-Private Property Get Company_YourType() As String
-    If TextYourType.Text <> "Selecionar" Then
-        Company_YourType = TextYourType.Text
-    End If
-End Property
-Private Property Let Company_YourType(Value As String)
-    If Value <> Empty Then
-        TextYourType.Text = Value
-    Else
-        TextYourType.Text = "Selecionar"
-    End If
-End Property
-
-
-'Entidade Contato
-Private Property Get Contact_Email() As String
-    Contact_Email = TextEmail.Text
-End Property
-Private Property Let Contact_Email(Value As String)
-    TextEmail.Text = Value
-End Property
-Private Property Get Contact_FixedPhone() As String
-    Contact_FixedPhone = TextFixedPhone.Text
-End Property
-Private Property Let Contact_FixedPhone(Value As String)
-    TextFixedPhone.Text = Value
-End Property
-Private Property Get Contact_MobilePhone() As String
-    Contact_MobilePhone = TextMobilePhone.Text
-End Property
-Private Property Let Contact_MobilePhone(Value As String)
-    TextMobilePhone.Text = Value
-End Property
-Private Property Get Contact_WhatsApp() As String
-    Contact_WhatsApp = TextWhatsapp.Text
-End Property
-Private Property Let Contact_WhatsApp(Value As String)
-    TextWhatsapp.Text = Value
-End Property
-
-
-'Entidade endereço
-Private Property Get Address_City() As String
-    Address_City = TextCity.Text
-End Property
-Private Property Let Address_City(Value As String)
-    TextCity = Value
-End Property
-Private Property Get Address_Complement() As String
-    Address_Complement = TextAddressComplement.Text
-End Property
-Private Property Let Address_Complement(Value As String)
-    TextAddressComplement.Text = Value
-End Property
-Private Property Get Address_Description() As String
-    Address_Description = TextAddressDescription.Text
-End Property
-Private Property Let Address_Description(Value As String)
-    TextAddressDescription.Text = Value
-End Property
-Private Property Get Address_District() As String
-    Address_District = TextDistrict.Text
-End Property
-Private Property Let Address_District(Value As String)
-    TextDistrict.Text = Value
-End Property
-Private Property Get Address_State() As String
-    If TextState.Text <> "Selecionar" Then
-        Address_State = TextState.Text
-    End If
-End Property
-Private Property Let Address_State(Value As String)
-    If Value <> Empty Then
-        TextState.Text = Value
-    Else
-        TextState.Text = "Selecionar"
-    End If
-End Property
-Private Property Get Address_StreetNumber() As String
-    Address_StreetNumber = TextStreetNumber.Text
-End Property
-Private Property Let Address_StreetNumber(Value As String)
-    TextStreetNumber.Text = Value
-End Property
-Private Property Get Address_ZipCode() As String
-    Address_ZipCode = TextZipCode.Text
-End Property
-Private Property Let Address_ZipCode(Value As String)
-    TextZipCode.Text = Value
-End Property
